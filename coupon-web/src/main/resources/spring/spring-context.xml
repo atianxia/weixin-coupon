@@ -26,8 +26,7 @@
     <bean id="wxMpConfigStorage" class="me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage">
 		<property name="appId" value="${appId}" />
 		<property name="secret" value="${secret}" />
-		<property name="token" value="${secret}" />
-		<property name="aesKey"  value="${EncodingAESKey}"></property>
+		<property name="token" value="${token}" />
 	</bean>
 	<bean name="wxMpService"  class="me.chanjar.weixin.mp.api.WxMpServiceImpl">
 		<property name="wxMpConfigStorage"  ref="wxMpConfigStorage"/>

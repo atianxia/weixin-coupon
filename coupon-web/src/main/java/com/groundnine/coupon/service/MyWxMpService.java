@@ -7,4 +7,6 @@ public interface MyWxMpService {
 	void rebuildMenu() throws WxErrorException;
 
 	String sendMessage(String type) throws WxErrorException;
+	
+	String parseUserId(String code) throws WxErrorException;
 }

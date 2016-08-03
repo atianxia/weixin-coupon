@@ -12,6 +12,9 @@ function layer(btn,obj){
 		//领取优惠券
 		if(obj == '.layerConCoupon'){
 			receiveCoupon($(this));
+		}else if(obj==".layerConRule"){
+			var usingRule = $(this).next().attr("value");
+			$('#usingRule').text(usingRule)
 		}
 		$('#shadeConBlur').show().addClass('show');
 		$(obj).addClass('show');
@@ -56,13 +59,14 @@ function receiveCoupon(obj){
 	var receiveAjaxUrl= rootPath + "/coupon/receive.do"
 	var couponId = $(obj).next().attr("value");
 	var buyLink = $(obj).next().next().attr("value");
+	var userId = $('#userId').val();
 	$.ajax({
 			url : receiveAjaxUrl,
 			type : 'post', // 上线之前改成post
 			timeout : 3000,
 			data : {
 				couponId :couponId,
-				userId : '111'
+				userId : userId
 			},
 			dataType : 'json',
 			cache : false,

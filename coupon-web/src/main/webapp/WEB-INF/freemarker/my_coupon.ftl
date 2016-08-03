@@ -21,7 +21,7 @@
 							<div>
 								<span>有效期至 ${couponItem.expireDate? string('yyyy.MM.dd')}</span>
 								<a href="javascript:;" class="ruleLy">查看使用规则</a>
-								
+								<input type="hidden" id="usingRule_${couponItem.couponId}" value="${couponItem.usingRule}"/>
 							</div>
 							<img src="${imageRootPath}/${couponItem.brandLogo}">
 							<s class="leftPie"></s>
@@ -45,7 +45,7 @@
 		<div id="shadeConBlur" style="display:none;">
 			<div class="layerConRule">
 				<div class="tit">使用规则</div>
-				<p>因此券为活动券，并不消耗各位值友任何积分或金币，活动随时可能变更或取消，故具体活动情况还请询问商家或参照商家活动说明，如有变动或取消还请谅解。</p>
+				<p id="usingRule">因此券为活动券，并不消耗各位值友任何积分或金币，活动随时可能变更或取消，故具体活动情况还请询问商家或参照商家活动说明，如有变动或取消还请谅解。</p>
 				<div class="btn">
 					<span>取消</span>
 					<a href="">立即领取</a>
@@ -55,7 +55,7 @@
 			<div class="layerConCoupon">
 				<div class="tit"></div>
 				<strong>获得优惠券</strong>
-				<p>B20160730SMZDM8138A001GH</p>
+				<p id='couponCode'>B20160730SMZDM8138A001GH</p>
 				<span>复制</span>
 				<div class="btn">
 					<span>取消</span>
@@ -66,6 +66,6 @@
 
 		</div>
 	</body>
-	<script src="js/zepto.min.js"></script>
-	<script src="js/index_dev.js"></script>
+	<script src="${resRoot}/js/zepto.min.js"></script>
+	<script src="${resRoot}/js/index_dev.js"></script>
 </html>

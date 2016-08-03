@@ -5,9 +5,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.groundnine.coupon.controller.CouponController;
 import com.groundnine.coupon.service.MyWxMpService;
 
 import me.chanjar.weixin.common.api.WxConsts;
@@ -16,28 +19,30 @@ import me.chanjar.weixin.common.bean.WxMenu.WxMenuButton;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.WxMpCustomMessage;
+import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
+import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import me.chanjar.weixin.mp.bean.result.WxMpUserList;
 
 @Service("myWxMpService")
 public class MyWxMpServiceImpl implements MyWxMpService {
-	
+	private static final Logger logger = LoggerFactory.getLogger(MyWxMpServiceImpl.class);
 	@Resource
 	private WxMpService wxMpService;
 	
-	@Value("couponListRedirectUri")
+	@Value("${couponListRedirectUri}")
 	private String couponListRedirectUri;
 	
-	@Value("myCouponRedirectUri")
+	@Value("${myCouponRedirectUri}")
 	private String myCouponRedirectUri;
 
 	private String buildCouponListUrl() {
 		return this.wxMpService.oauth2buildAuthorizationUrl(couponListRedirectUri, 
-				WxConsts.OAUTH2_SCOPE_USER_INFO, "couponList");
+				WxConsts.OAUTH2_SCOPE_BASE, "couponList");
 	}
 
 	private String buildMyCouponUrl() {
 		return this.wxMpService.oauth2buildAuthorizationUrl(myCouponRedirectUri, 
-				WxConsts.OAUTH2_SCOPE_USER_INFO, "myCoupon");
+				WxConsts.OAUTH2_SCOPE_BASE, "myCoupon");
 	}
 
 	@Override
@@ -82,6 +87,15 @@ public class MyWxMpServiceImpl implements MyWxMpService {
 			return "成功！";
 		}
 		return "失败！";
+	}
+
+	@Override
+	public String parseUserId(String code) throws WxErrorException {
+		 WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
+		// WxMpUser wxMpUser = wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken, null);
+		 String userId = wxMpOAuth2AccessToken.getOpenId();
+		 logger.info("openId："+userId);
+		 return userId;
 	}
 	
 	

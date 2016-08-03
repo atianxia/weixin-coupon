@@ -41,7 +41,7 @@
 		<div id="shadeConBlur" style="display:none;">
 			<div class="layerConRule">
 				<div class="tit">使用规则</div>
-				<p>因此券为活动券，并不消耗各位值友任何积分或金币，活动随时可能变更或取消，故具体活动情况还请询问商家或参照商家活动说明，如有变动或取消还请谅解。</p>
+				<p id="usingRule">因此券为活动券，并不消耗各位值友任何积分或金币，活动随时可能变更或取消，故具体活动情况还请询问商家或参照商家活动说明，如有变动或取消还请谅解。</p>
 				<div class="btn">
 					<span>取消</span>
 					<a href="">立即领取</a>
