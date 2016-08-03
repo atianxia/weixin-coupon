@@ -115,6 +115,7 @@ public class WxMpController {
 	}
 
 	@RequestMapping("/rebuildMenu")
+	@ResponseBody
 	public String rebuildMenu() throws WxErrorException {
 		this.myWxMpService.rebuildMenu();
 		return "sucess!";
