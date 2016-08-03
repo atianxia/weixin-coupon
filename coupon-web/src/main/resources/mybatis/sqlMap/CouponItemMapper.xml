@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.groundnine.coupon.dao.CouponItemDao" >
+  <resultMap id="BaseResultMap" type="com.groundnine.coupon.model.CouponItem" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="coupon_id" property="couponId" jdbcType="BIGINT" />
+    <result column="coupon_code" property="couponCode" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="receive_time" property="receiveTime" jdbcType="TIMESTAMP" />
+    <result column="is_del" property="isDel" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, coupon_id, coupon_code, user_id, receive_time, is_del, create_time, update_time
+  </sql>
+  
+  <select id="selectFirstUnusedCoupon" resultMap="BaseResultMap">
+  	SELECT
+		<include refid="Base_Column_List" />
+	FROM
+		`coupon_item`
+	WHERE
+		coupon_id =  #{couponId,jdbcType=BIGINT} 
+		and user_id = '' 
+		limit 1 FOR UPDATE;
+  </select>
+  
+  <update id="updateCouponCodeToUsed" >
+	  UPDATE coupon_item
+		SET user_id =  #{userId,jdbcType=VARCHAR}
+	  WHERE
+		id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <resultMap id="UserCouponResultMap" type="com.groundnine.coupon.vo.CouponItemVo" >
+    <result column="coupon_name" property="couponName" jdbcType="VARCHAR" />
+    <result column="expire_date" property="expireDate" jdbcType="TIMESTAMP" />
+    <result column="brand_logo" property="brandLogo" jdbcType="VARCHAR" />
+    <result column="using_rule" property="usingRule" jdbcType="VARCHAR" />
+    <result column="buy_link" property="buyLink" jdbcType="VARCHAR" />
+    <result column="coupon_code" property="couponCode" jdbcType="VARCHAR" />
+    <result column="receive_time" property="receiveTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <select id="selectUserCouponList" resultMap="UserCouponResultMap">
+  	SELECT
+		t1.coupon_id,
+		t1.coupon_name,
+		t1.expire_date,
+		t1.brand_logo,
+		t1.buy_link,
+		t1.using_rule,
+		t2.coupon_code,
+		t2.receive_time
+	FROM
+		coupon t1
+	INNER JOIN (
+		SELECT
+			coupon_id,
+			coupon_code,
+			receive_time
+		FROM
+			coupon_item
+		WHERE
+			user_id = #{userId,jdbcType=VARCHAR}
+	) t2 ON t1.coupon_id = t2.coupon_id AND t1.is_del = 0
+	ORDER BY
+		t2.receive_time DESC
+    limit #{offset,jdbcType=INTEGER}, #{rows,jdbcType=INTEGER}
+  </select>
+  	
+</mapper>

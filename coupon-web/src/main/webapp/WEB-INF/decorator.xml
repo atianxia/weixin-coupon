@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 引用公共的头和尾 -->
+<decorators defaultdir="/WEB-INF/freemarker/decorators">
+	<excludes>
+		<pattern>/css/*</pattern>
+		<pattern>/images/*</pattern>
+		<pattern>/js/*</pattern>
+		<pattern>/*.jsp</pattern>
+		<pattern>**/json*</pattern>
+	</excludes>
+	<decorator name="default" page="default.ftl">
+		<pattern>*.ftl*</pattern>
+	</decorator>
+</decorators>
+

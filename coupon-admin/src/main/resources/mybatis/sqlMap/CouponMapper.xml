@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groundnine.coupon.dao.CouponDao">
+  <resultMap id="BaseResultMap" type="com.groundnine.coupon.model.Coupon" >
+    <id column="coupon_id" property="couponId" jdbcType="BIGINT" />
+    <result column="coupon_name" property="couponName" jdbcType="VARCHAR" />
+    <result column="coupon_status" property="couponStatus" jdbcType="TINYINT" />
+    <result column="expire_date" property="expireDate" jdbcType="TIMESTAMP" />
+    <result column="brand_logo" property="brandLogo" jdbcType="VARCHAR" />
+    <result column="using_rule" property="usingRule" jdbcType="VARCHAR" />
+    <result column="buy_link" property="buyLink" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="INTEGER" />
+    <result column="received_times" property="receivedTimes" jdbcType="INTEGER" />
+    <result column="is_del" property="isDel" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    coupon_id, coupon_name, coupon_status, expire_date, brand_logo, using_rule, buy_link, 
+    amount, received_times, is_del, create_time, update_time
+  </sql>
+  
+  <sql id="Coupon_Query_Condition">
+   where is_del = 0
+    <if test="coupon.couponId != null">
+        and coupon_id = #{coupon.couponId,jdbcType=BIGINT}
+      </if>
+      <if test="coupon.couponName != null">
+        and coupon_name = #{coupon.couponName,jdbcType=VARCHAR}
+      </if>
+      <if test="coupon.brandLogo != null">
+        and brand_logo = #{coupon.brandLogo,jdbcType=VARCHAR}
+      </if>
+      <if test="coupon.usingRule != null">
+        and using_rule = #{coupon.usingRule,jdbcType=VARCHAR}
+      </if>
+      <if test="coupon.buyLink != null">
+        and buy_link = #{coupon.buyLink,jdbcType=VARCHAR}
+      </if>
+      <if test="coupon.createTime != null">
+        and create_time = #{coupon.createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="coupon.updateTime != null">
+        and update_time = #{coupon.updateTime,jdbcType=TIMESTAMP}
+      </if>
+  </sql>
+  
+  <select id="selectByCouponId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from coupon
+    where coupon_id = #{couponId,jdbcType=BIGINT}
+  </select>
+  
+  <select id="queryCoupons" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from coupon
+    <include refid="Coupon_Query_Condition"></include>
+    limit #{pageStart,jdbcType=INTEGER}, #{rows,jdbcType=INTEGER}
+  </select>
+  
+  <select id="countCouponAmount" resultType="java.lang.Integer">
+  	SELECT
+		count(*)
+	FROM
+		coupon
+    <include refid="Coupon_Query_Condition"></include>
+  </select>
+  
+  <update id="deleteCouponByIds">
+    UPDATE coupon
+	SET is_del = 1
+	WHERE
+		coupon_id IN
+    <foreach collection="couponIds" separator="," item="couponId" open="(" close=")">
+         #{couponId}
+    </foreach> 
+  </update>
+  
+  <update id="updateCouponStatusByIds">
+    UPDATE coupon
+	SET coupon_status = #{couponStatus, jdbcType=BIT}
+	WHERE
+		coupon_id IN
+    <foreach collection="couponIds" separator="," item="couponId" open="(" close=")">
+         #{couponId}
+    </foreach> 
+  </update>
+  
+  <insert id="insert" parameterType="com.groundnine.coupon.model.Coupon">
+    <selectKey resultType="java.lang.Long" keyProperty="couponId">  
+        SELECT  
+        LAST_INSERT_ID()  
+    </selectKey>  
+    insert into coupon
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="couponId != null">
+        coupon_id,
+      </if>
+      <if test="couponName != null">
+        coupon_name,
+      </if>
+      <if test="expireDate != null" >
+        expire_date,
+      </if>
+      <if test="brandLogo != null">
+        brand_logo,
+      </if>
+      <if test="usingRule != null">
+        using_rule,
+      </if>
+      <if test="buyLink != null">
+        buy_link,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="couponId != null">
+        #{couponId,jdbcType=BIGINT},
+      </if>
+      <if test="couponName != null">
+        #{couponName,jdbcType=VARCHAR},
+      </if>
+      <if test="expireDate != null" >
+        #{expireDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="brandLogo != null">
+        #{brandLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="usingRule != null">
+        #{usingRule,jdbcType=VARCHAR},
+      </if>
+      <if test="buyLink != null">
+        #{buyLink,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=BIT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <insert id="batchInsert" useGeneratedKeys="true" parameterType="com.groundnine.coupon.vo.CouponInfoVo">
+   	<selectKey resultType="java.lang.Long" keyProperty="couponId">  
+        SELECT  
+        LAST_INSERT_ID()  
+    </selectKey>  
+    INSERT INTO `coupon` (
+	`coupon_name`,
+	`brand_logo`,
+	`using_rule`,
+	`buy_link`,
+	`expire_date`
+
+	)
+	VALUES  
+	
+        (
+        #{couponName},
+        #{brandLogo},
+        #{usingRule},
+        #{buyLink},
+        #{expireDate}
+        )
+</insert>  
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.groundnine.coupon.model.Coupon">
+    update coupon
+    <set>
+      <if test="couponName != null">
+        coupon_name = #{couponName,jdbcType=VARCHAR},
+      </if>
+       <if test="expireDate != null" >
+        expire_date = #{expireDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="brandLogo != null">
+        brand_logo = #{brandLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="usingRule != null">
+        using_rule = #{usingRule,jdbcType=VARCHAR},
+      </if>
+      <if test="buyLink != null">
+        buy_link = #{buyLink,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=BIT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where coupon_id = #{couponId,jdbcType=BIGINT}
+  </update>
+</mapper>
