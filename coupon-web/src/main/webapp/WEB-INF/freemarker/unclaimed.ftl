@@ -13,7 +13,7 @@
 		<section>
 			<div class="content unclm">
 				<p>还未领取优惠券，快去领取吧！</p>
-				<a href="${myCouponUrl}">去领取</a>
+				<a href="${couponListUrl}">去领取</a>
 			</div>
 		</section>
 		<div id="shadeConBlur" style="display:none;">

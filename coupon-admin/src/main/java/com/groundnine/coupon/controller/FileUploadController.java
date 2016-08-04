@@ -44,7 +44,7 @@ public class FileUploadController extends BaseController{
 	@ResponseBody
 	public ModelMap importExcel(@RequestParam MultipartFile uploadExcel)
 			throws IOException {
-		int importAmount = this.couponService.importExcel(uploadExcel.getInputStream());
+		int importAmount = this.fileUploadService.importExcel(uploadExcel.getInputStream());
 		ModelMap modelMap = new ModelMap();
 		modelMap.addAttribute("result", importAmount >0 ? "success" : "failed");
 		return modelMap;

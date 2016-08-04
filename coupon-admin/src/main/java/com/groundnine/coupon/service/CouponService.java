@@ -17,8 +17,6 @@ public interface CouponService {
 
 	int deleteCouponByIds(String couponIds);
 
-	int importExcel(InputStream inputStream);
-
 	int updateCoupon(CouponVo couponVo);
 
 	int addCoupon(CouponVo couponVo);

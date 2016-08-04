@@ -24,6 +24,8 @@ public class CouponVo {
 	
 	private int receivedTimes;
 	
+	private int received;
+	
 
 	public Long getCouponId() {
 		return couponId;
@@ -88,5 +90,15 @@ public class CouponVo {
 	public void setReceivedTimes(int receivedTimes) {
 		this.receivedTimes = receivedTimes;
 	}
+
+	public int getReceived() {
+		return received;
+	}
+
+	public void setReceived(int received) {
+		this.received = received;
+	}
+	
+	
 
 }

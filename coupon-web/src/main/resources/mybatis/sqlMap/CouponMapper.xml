@@ -3,7 +3,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.groundnine.coupon.dao.CouponDao">
- <resultMap id="BaseResultMap" type="com.groundnine.coupon.vo.CouponVo" >
+
+<resultMap id="BaseResultMap" type="com.groundnine.coupon.model.Coupon" >
+    <id column="coupon_id" property="couponId" jdbcType="BIGINT" />
+    <result column="coupon_name" property="couponName" jdbcType="VARCHAR" />
+    <result column="coupon_status" property="couponStatus" jdbcType="TINYINT" />
+    <result column="expire_date" property="expireDate" jdbcType="TIMESTAMP" />
+    <result column="brand_logo" property="brandLogo" jdbcType="VARCHAR" />
+    <result column="using_rule" property="usingRule" jdbcType="VARCHAR" />
+    <result column="buy_link" property="buyLink" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="INTEGER" />
+    <result column="received_times" property="receivedTimes" jdbcType="INTEGER" />
+    <result column="is_del" property="isDel" jdbcType="BIT" />
+     <result column="online_time" property="onlineTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+   <sql id="Base_Column_List">
+    coupon_id, coupon_name, coupon_status, expire_date, online_time, brand_logo, using_rule, buy_link, 
+    amount, received_times, is_del, create_time, update_time
+  </sql>
+  
+ <resultMap id="CouponListResultMap" type="com.groundnine.coupon.vo.CouponVo" >
     <id column="coupon_id" property="couponId" jdbcType="BIGINT" />
     <result column="coupon_name" property="couponName" jdbcType="VARCHAR" />
     <result column="expire_date" property="expireDate" jdbcType="TIMESTAMP" />
@@ -12,26 +34,53 @@
     <result column="buy_link" property="buyLink" jdbcType="VARCHAR" />
     <result column="amount" property="amount" jdbcType="INTEGER" />
     <result column="received_times" property="receivedTimes" jdbcType="INTEGER" />
+    <result column="received" property="received" jdbcType="INTEGER" />
   </resultMap>
   
-  <select id="selectCouponList" resultMap="BaseResultMap">
+  <select id="selectCouponList" resultMap="CouponListResultMap">
    	SELECT
-		coupon_id,
-		coupon_name,
-		expire_date,
-		brand_logo,
-		buy_link,
-		using_rule,
-		amount,
-		received_times,
-		CASE amount - received_times
-		WHEN 0 THEN 1
-		ELSE 0
-		END  as sell_out_flag
+	t1.coupon_id,
+	t1.coupon_name,
+	t1.expire_date,
+	t1.brand_logo,
+	t1.buy_link,
+	t1.using_rule,
+	t1.amount,
+	t1.received_times,
+	CASE t1.amount - t1.received_times
+	WHEN 0 THEN
+		1
+	ELSE
+		0
+	END AS sell_out_flag
+	<if test="userId != null" >
+	,
+	CASE
+	WHEN t2.coupon_id IS NULL THEN
+		0
+	ELSE
+		1
+	END AS received
+	</if>
+	
 	FROM
-		`coupon`
-	WHERE  is_del = 0 AND coupon_status = 1
-	ORDER BY sell_out_flag asc, online_time desc
+		`coupon` t1
+	<if test="userId != null" >
+	LEFT JOIN (
+		SELECT
+			coupon_id
+		FROM
+			coupon_item
+		WHERE
+			user_id = #{userId,jdbcType=VARCHAR}
+	) t2 ON t1.coupon_id = t2.coupon_id
+	</if>
+	WHERE
+		t1.is_del = 0
+	AND t1.coupon_status = 1
+	ORDER BY
+		sell_out_flag ASC,
+		t1.online_time DESC
     limit #{offset,jdbcType=INTEGER}, #{rows,jdbcType=INTEGER}
   </select>
   
@@ -42,4 +91,10 @@
 		coupon_id = #{couponId,jdbcType=INTEGER}
   </update>
   
+  <select id="selectCouponByCouponId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from coupon
+    where coupon_id = #{couponId,jdbcType=BIGINT}
+  </select>
 </mapper>

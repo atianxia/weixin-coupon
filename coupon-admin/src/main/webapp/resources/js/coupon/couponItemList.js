@@ -71,7 +71,7 @@ function doSearch(type) {
 		rownumbers : "true",
 		pagination : "true",
 		width : "100%",
-		height : 350,
+		height : 500,
 		queryParams : {
 			couponId : $('#couponId').val(),
 			couponName : $('#couponName').val(),
@@ -100,7 +100,11 @@ function doSearch(type) {
 			field : 'userId',
 			title : '用户Id',
 			align : 'center'
-		} ] ]
+		}, {
+			field : 'receiveTime',
+			title : '领取时间',
+			align : 'center'
+		}  ] ]
 	});
 }
 
@@ -190,15 +194,11 @@ function valueExport() {
  * 重置查詢條件
  */
 function doReset() {
-	$('#itemId').val('');
-	$('#itemName').val('');
-	$('#round').val('');
-	$('#actiTopic').val('');
+	$('#couponId').val('');
+	$('#couponName').val('');
 	$('#userId').val('');
-	$('#createStartTime').datetimebox('setValue', '');
-	$('#createEndTime').datetimebox('setValue', '');
-	$('#timeDiffe').val('');
-	$('#timeSpan').val('30');
+	$('#receiveStartTime').datetimebox('setValue', '');
+	$('#receiveEndTime').datetimebox('setValue', '');
 }
 function msgOut(content) {
 	$.messager.show({

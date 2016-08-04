@@ -110,7 +110,7 @@ public class MyWxMpServiceImpl implements MyWxMpService {
 		} catch (WxErrorException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			userId = "BizConst.NO_LOGIN_USER_ID";
+			userId = BizConst.NO_LOGIN_USER_ID;
 		}
 		return userId;
 	}

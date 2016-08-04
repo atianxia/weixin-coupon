@@ -4,10 +4,10 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,8 +18,8 @@ import com.groundnine.coupon.service.CouponItemService;
 import com.groundnine.coupon.service.CouponService;
 import com.groundnine.coupon.service.MyWxMpService;
 import com.groundnine.coupon.vo.CouponItemVo;
+import com.groundnine.coupon.vo.CouponReceiveVo;
 import com.groundnine.coupon.vo.CouponVo;
-import com.mchange.lang.StringUtils;
 
 import me.chanjar.weixin.common.exception.WxErrorException;
 
@@ -47,14 +47,18 @@ public class CouponController extends BaseController {
 	 */
 	@RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView list(
+			@RequestParam(value="userId", required=false) String userId,
 			@RequestParam(value="page", defaultValue="1") int page, 
 			@RequestParam(value="rows", defaultValue="1000") int rows,
 			@RequestParam(value="code", required=false) String code) throws WxErrorException {
 		logger.info("微信公众号code：" + code);
 		ModelAndView mav = new ModelAndView();
-		List<CouponVo> couponInfos = this.couponService.queryCoupons(page, rows);
+		if(StringUtils.isBlank(userId)){
+			 userId = this.myWxMpService.parseUserId(code);
+		}
+		List<CouponVo> couponInfos = this.couponService.queryCoupons(userId, page, rows);
         mav.addObject("couponInfos", couponInfos);
-        mav.addObject("userId", this.myWxMpService.parseUserId(code));
+        mav.addObject("userId", userId);
         mav.setViewName("list.ftl");
         return mav;
 	}
@@ -68,12 +72,9 @@ public class CouponController extends BaseController {
 	 */
 	@RequestMapping(value = "/receive", method = RequestMethod.POST)
 	@ResponseBody
-	public ModelMap receive(@RequestParam(required= true, value="userId") String userId,
+	public CouponReceiveVo receive(@RequestParam(required= true, value="userId") String userId,
 							@RequestParam(required= true, value="couponId") Long couponId) {
-		ModelMap modelMap = new ModelMap();
-		String couponCode = this.couponService.receiveCoupon(userId, couponId);
-		modelMap.addAttribute("couponCode", couponCode);
-        return modelMap;
+		return this.couponService.receiveCoupon(userId, couponId);
 	}
 	
 	/**
@@ -87,11 +88,15 @@ public class CouponController extends BaseController {
 	 */
 	@RequestMapping(value = "/myCoupon", method = {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView myCoupon(
+			@RequestParam(value="userId", required=false) String userId,
 			@RequestParam(value="page", defaultValue="1") int pageNum, 
 			@RequestParam(value="rows", defaultValue="1000") int rows,
 			@RequestParam(value="code", required=false) String code) throws WxErrorException {
 		logger.info("微信公众号code：" + code);
-		String userId = this.myWxMpService.parseUserId(code);
+		if(StringUtils.isBlank(userId)){
+			userId = this.myWxMpService.parseUserId(code);
+			
+		}
 		ModelAndView mav = new ModelAndView();
 		List<CouponItemVo> couponItems = this.couponItemService.queryUserCoupons(userId, pageNum, rows);
         mav.addObject("couponItems", couponItems);
@@ -100,12 +105,12 @@ public class CouponController extends BaseController {
         
         if(couponItems.size() == 0){
         	viewName = "unclaimed.ftl";
-        	mav.addObject("myCouponUrl", this.myWxMpService.buildCouponListRedirectUri());
+        	mav.addObject("couponListUrl", this.myWxMpService.buildCouponListRedirectUri());
         }else{
         	viewName = "my_coupon.ftl";
         }
         	
-        mav.setViewName(couponItems.size() == 0 ? "unclaimed.ftl":"my_coupon.ftl");
+        mav.setViewName(viewName);
         return mav;
 	}
 	

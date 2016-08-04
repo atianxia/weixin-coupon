@@ -26,15 +26,21 @@
 							<s class="leftPie"></s>
 							<s class="rightPie"></s>
 						</div>
-						<div class="conBot">
-							<#if couponInfo.amount == couponInfo.receivedTimes>
+						<#if couponInfo.amount == couponInfo.receivedTimes>
+						<div class="conBot over">
 							<a href="javascript:;" class="gray">已领完</a>
-							<#else>
+							<span>已领取：<b id="receivedTimes_${couponInfo.couponId}">${couponInfo.receivedTimes}</b></span>
+						<#elseif couponInfo.received == 1>
+						<div class="conBot over">
+							<a href="javascript:;" class="gray">已领取</a>
+							<span><a href="${rootPath}/coupon/myCoupon.do?userId=${userId}" >查看我的优惠券</a></span>
+						<#else>
+						<div class="conBot">
 							<a href="javascript:;" class="cpLy">立即领取</a>
-							</#if>
+							<span>已领取：<b id="receivedTimes_${couponInfo.couponId}">${couponInfo.receivedTimes}</b></span>
+						</#if>
 							<input type="hidden" id="couponId_${couponInfo.couponId}" value="${couponInfo.couponId}"/>
-							<input type="hidden" id="couponId_${couponInfo.couponId}" value="${couponInfo.buyLink}"/>
-							<span>已领取：<b>${couponInfo.receivedTimes}</b></span>
+							<input type="hidden" id="buyLink_${couponInfo.couponId}" value="${couponInfo.buyLink}"/>
 						</div>
 					</li>
 					</#list>

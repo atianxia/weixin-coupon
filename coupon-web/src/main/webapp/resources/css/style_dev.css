@@ -142,7 +142,7 @@ table {
 .content .conBot{
 	padding-top: 15px;
 }
-.content .conBot a,.content.unclm a{
+.content .conBot>a,.content.unclm>a{
 	line-height: 34px;
 	padding:0 7%;
 	background-color: #ff5656;
@@ -172,6 +172,7 @@ table {
 .content .conBot a.gray{
 	background-color: #ccc;
 	color: #fff;
+	box-shadow: 0 0 0 transparent;
 }
 .content .conBot>span{
 	color: #999;
@@ -201,6 +202,16 @@ table {
 	color: #f04848;
 	display: block;
 	margin-top: 2px;
+}
+.content .conBot.over>div{
+	float: right;
+}
+.content .conBot.over>div div>span{
+	margin-top: 20px;
+}
+.content .conBot.over>div div>span a{
+	color: #f04848;
+	text-decoration: none;
 }
 
 
@@ -316,16 +327,22 @@ table {
 
 @media(max-width: 320px){
 	.content .conBot.ed a{
-		padding: 0 3%;
+		padding: 0 7%;
 	    margin-right: 4%;
 	    margin-top: 10px;
-	}
-	.content .conBot.ed>div{
-		width: 70%;
 	}
 	.content .conBot.ed>div div>span{
 		display: block;
 		clear: both;
 		margin-top: 2px;
 	}
+	.content .conBot.over>div div>span{
+		margin-top: 10px;
+		text-align: right;
+	}
+	.content .conBot.over>div div>span a{
+		color: #f04848;
+		text-decoration: none;
+	}
+
 }

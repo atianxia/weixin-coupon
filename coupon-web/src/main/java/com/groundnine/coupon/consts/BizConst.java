@@ -1,9 +1,9 @@
 package com.groundnine.coupon.consts;
 
-public interface BizConst {
+public class BizConst {
 	
-	String SELL_OUT_TEXT = "已经抢光了！";
+	public static String SELL_OUT_TEXT = "已经抢光了！";
 	
-	String NO_LOGIN_USER_ID = "guest";
+	public static String NO_LOGIN_USER_ID = "guest";
 
 }

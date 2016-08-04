@@ -48,7 +48,7 @@
       </if>
   </sql>
   
-  <select id="selectByCouponId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByCouponId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from coupon
@@ -88,7 +88,7 @@
         , online_time = now()
      </if>
      <if test="couponStatus == 0">
-        , online_time = '0000-00-00 00:00:00'
+        , online_time = null
      </if>
 	WHERE
 		coupon_id IN
@@ -167,26 +167,42 @@
         SELECT  
         LAST_INSERT_ID()  
     </selectKey>  
-    INSERT INTO `coupon` (
-	`coupon_name`,
-	`brand_logo`,
-	`using_rule`,
-	`buy_link`,
-	`expire_date`,
-	`amount`
-
-	)
-	VALUES  
-	
-        (
-        #{couponName},
-        #{brandLogo},
-        #{usingRule},
-        #{buyLink},
-        #{expireDate},
-        #{amount}
-        )
-</insert>  
+    INSERT INTO `coupon` 
+     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="couponName != null">
+        coupon_name,
+      </if>
+      <if test="expireDate != null" >
+        expire_date,
+      </if>
+      <if test="brandLogo != null">
+        brand_logo,
+      </if>
+      <if test="usingRule != null">
+        using_rule,
+      </if>
+      <if test="buyLink != null">
+        buy_link,
+      </if>
+      </trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="couponName != null">
+	       #{couponName,jdbcType=VARCHAR},
+	     </if>
+	     <if test="expireDate != null" >
+	       #{expireDate,jdbcType=TIMESTAMP},
+	     </if>
+	     <if test="brandLogo != null">
+	       #{brandLogo,jdbcType=VARCHAR},
+	     </if>
+	     <if test="usingRule != null">
+	       #{usingRule,jdbcType=VARCHAR},
+	     </if>
+	     <if test="buyLink != null">
+	       #{buyLink,jdbcType=VARCHAR},
+	     </if>
+		</trim>
+ </insert>  
   
   
   <update id="updateByPrimaryKeySelective" parameterType="com.groundnine.coupon.model.Coupon">

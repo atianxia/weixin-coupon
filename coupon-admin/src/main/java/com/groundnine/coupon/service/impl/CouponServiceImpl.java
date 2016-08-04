@@ -1,22 +1,10 @@
 package com.groundnine.coupon.service.impl;
 
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
-import com.groundnine.coupon.dao.CouponDao;
-import com.groundnine.coupon.dao.CouponItemDao;
-import com.groundnine.coupon.model.Coupon;
-import com.groundnine.coupon.service.CouponService;
-import com.groundnine.coupon.vo.CouponInfoVo;
-import com.groundnine.coupon.vo.CouponItemPersistVo;
-import com.groundnine.coupon.vo.CouponQueryVo;
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -25,8 +13,11 @@ import org.springframework.stereotype.Service;
 import com.google.common.base.Function;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Collections2;
-import com.groundnine.coupon.util.CouponExcelHelper;
-import com.groundnine.coupon.vo.CouponItemVo;
+import com.groundnine.coupon.dao.CouponDao;
+import com.groundnine.coupon.dao.CouponItemDao;
+import com.groundnine.coupon.model.Coupon;
+import com.groundnine.coupon.service.CouponService;
+import com.groundnine.coupon.vo.CouponQueryVo;
 import com.groundnine.coupon.vo.CouponVo;
 
 @Service("couponService")
@@ -39,8 +30,6 @@ public class CouponServiceImpl implements CouponService {
 	@Resource
 	private CouponItemDao couponItemDao;
 	
-	@Resource
-	private CouponExcelHelper couponExcelHelper;
 
 	@Override
 	public CouponVo getCouponById(String couponId) {
@@ -78,49 +67,7 @@ public class CouponServiceImpl implements CouponService {
 		return this.couponDao.deleteCouponByIds(couponIdList);
 	}
 
-	@Override
-	public int importExcel(InputStream inputStream) {
-		List<CouponItemVo> couponItemVos = couponExcelHelper.parseExcelToList(inputStream);
-		this.batchInsert(convert(couponItemVos));
-		return 1;
-
-	}
 	
-	private void batchInsert(Collection<CouponInfoVo> couponInfoVos){
-		if(CollectionUtils.isNotEmpty(couponInfoVos)){
-			for(CouponInfoVo couponInfoVo : couponInfoVos){
-				this.couponDao.batchInsert(couponInfoVo);
-				this.couponItemDao.batchInsert(couponInfoVo);
-			}
-		}
-	}
-	
-	private Collection<CouponInfoVo> convert(List<CouponItemVo> couponItemVos){
-		Map<String, CouponInfoVo> couponInfoMap = new HashMap<String, CouponInfoVo>();
-		if(CollectionUtils.isNotEmpty(couponItemVos)){
-			for(CouponItemVo couponItemVo : couponItemVos){
-				if(couponInfoMap.containsKey(couponItemVo.getCouponName())){
-					CouponItemPersistVo itemPersistVo = new CouponItemPersistVo();
-					itemPersistVo.setCouponCode(couponItemVo.getCouponCode());
-					CouponInfoVo couponInfoVo = couponInfoMap.get(couponItemVo.getCouponName());
-					couponInfoVo.getCouponItemPersistVos().add(itemPersistVo);
-					couponInfoVo.setAmount(couponInfoVo.getAmount() + 1);
-				}else{
-					CouponInfoVo couponInfoVo = new CouponInfoVo();
-					BeanUtils.copyProperties(couponItemVo, couponInfoVo);
-					couponInfoVo.setAmount(1);
-					List<CouponItemPersistVo> itemPersistVos = new ArrayList<CouponItemPersistVo>();
-					CouponItemPersistVo itemPersistVo = new CouponItemPersistVo();
-					itemPersistVo.setCouponCode(couponItemVo.getCouponCode());
-					itemPersistVos.add(itemPersistVo);
-					couponInfoVo.setCouponItemPersistVos(itemPersistVos);
-					couponInfoMap.put(couponItemVo.getCouponName(), couponInfoVo);
-				}
-					
-			}
-		}
-		return couponInfoMap.values();
-	}
 
 	@Override
 	public int updateCoupon(CouponVo couponVo) {

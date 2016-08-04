@@ -21,6 +21,25 @@ function layer(btn,obj){
 
 			$('#shadeConBlur').show().addClass('show');
 			$(obj).addClass('show');
+			
+			var oCon = btn.parents('.conTop').siblings('.conBot').find('a');
+
+			if(oCon.hasClass('gray')){
+				$('#shadeConBlur').find('.btn a').hide();
+				$('#shadeConBlur').find('.btn span').css({
+					'float': 'none',
+					'margin': '0 auto',
+					'display': 'block'
+				});
+			}
+			else{
+				$('#shadeConBlur').find('.btn a').show();
+				$('#shadeConBlur').find('.btn span').css({
+					'float': 'left',
+					'margin': '0',
+					'display': 'block'
+				});
+			}
 		}
 	});
 }
@@ -59,7 +78,7 @@ $(function(){
 	
 })
 
-function userOperation($this, ojb){
+function userOperation($this, obj){
 	if(obj == '.layerConCoupon'){//领取优惠券
 		receiveCoupon($this);
 	}else if(obj==".layerConRule"){//查看使用规则
@@ -82,8 +101,8 @@ function userOperation($this, ojb){
 function receiveCoupon(obj){
 	var rootPath = $("#rootPath").val();
 	var receiveAjaxUrl= rootPath + "/coupon/receive.do"
-	var couponId = $(obj).next().attr("value");
-	var buyLink = $(obj).next().next().attr("value");
+	var couponId = $(obj).next().next().attr("value");
+	var buyLink = $(obj).next().next().next().attr("value");
 	var userId = $('#userId').val();
 	$.ajax({
 			url : receiveAjaxUrl,
@@ -96,7 +115,8 @@ function receiveCoupon(obj){
 			dataType : 'json',
 			cache : false,
 			success : function(json) {
-				if (json && json.couponCode) {
+				if (json) {
+					$("#receivedTimes_" + couponId).text(json.receivedTimes);
 					$("#couponCode").text(json.couponCode);
 					$("#toUse").attr("href",buyLink);
 				}
@@ -105,3 +125,4 @@ function receiveCoupon(obj){
 			}
 	});
 }
+
