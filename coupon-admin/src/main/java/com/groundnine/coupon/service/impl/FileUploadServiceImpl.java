@@ -15,7 +15,7 @@ import com.groundnine.coupon.util.MD5Util;
 @Service
 public class FileUploadServiceImpl implements FileUploadService {
 	
-	@Value("images.directory")
+	@Value("${images.directory}")
 	private String imagesDirectory;
 	
 	@Value("${server.host}/${images.path}")
