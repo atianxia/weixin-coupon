@@ -14,11 +14,12 @@
     <result column="amount" property="amount" jdbcType="INTEGER" />
     <result column="received_times" property="receivedTimes" jdbcType="INTEGER" />
     <result column="is_del" property="isDel" jdbcType="BIT" />
+     <result column="online_time" property="onlineTime" jdbcType="TIMESTAMP" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List">
-    coupon_id, coupon_name, coupon_status, expire_date, brand_logo, using_rule, buy_link, 
+    coupon_id, coupon_name, coupon_status, expire_date, online_time, brand_logo, using_rule, buy_link, 
     amount, received_times, is_del, create_time, update_time
   </sql>
   
@@ -83,6 +84,12 @@
   <update id="updateCouponStatusByIds">
     UPDATE coupon
 	SET coupon_status = #{couponStatus, jdbcType=BIT}
+	 <if test="couponStatus == 1">
+        , online_time = now()
+     </if>
+     <if test="couponStatus == 0">
+        , online_time = '0000-00-00 00:00:00'
+     </if>
 	WHERE
 		coupon_id IN
     <foreach collection="couponIds" separator="," item="couponId" open="(" close=")">
@@ -165,7 +172,8 @@
 	`brand_logo`,
 	`using_rule`,
 	`buy_link`,
-	`expire_date`
+	`expire_date`,
+	`amount`
 
 	)
 	VALUES  
@@ -175,7 +183,8 @@
         #{brandLogo},
         #{usingRule},
         #{buyLink},
-        #{expireDate}
+        #{expireDate},
+        #{amount}
         )
 </insert>  
   

@@ -5,12 +5,13 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.groundnine.coupon.controller.CouponController;
+import com.groundnine.coupon.consts.BizConst;
 import com.groundnine.coupon.service.MyWxMpService;
 
 import me.chanjar.weixin.common.api.WxConsts;
@@ -20,7 +21,6 @@ import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.WxMpCustomMessage;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
-import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import me.chanjar.weixin.mp.bean.result.WxMpUserList;
 
 @Service("myWxMpService")
@@ -29,10 +29,10 @@ public class MyWxMpServiceImpl implements MyWxMpService {
 	@Resource
 	private WxMpService wxMpService;
 	
-	@Value("${couponListRedirectUri}")
+	@Value("${server.host}/${couponListRedirectUri}")
 	private String couponListRedirectUri;
 	
-	@Value("${myCouponRedirectUri}")
+	@Value("${server.host}/${myCouponRedirectUri}")
 	private String myCouponRedirectUri;
 
 	private String buildCouponListUrl() {
@@ -43,6 +43,11 @@ public class MyWxMpServiceImpl implements MyWxMpService {
 	private String buildMyCouponUrl() {
 		return this.wxMpService.oauth2buildAuthorizationUrl(myCouponRedirectUri, 
 				WxConsts.OAUTH2_SCOPE_BASE, "myCoupon");
+	}
+	
+	@Override
+	public String buildCouponListRedirectUri() {
+		return couponListRedirectUri;
 	}
 
 	@Override
@@ -90,12 +95,24 @@ public class MyWxMpServiceImpl implements MyWxMpService {
 	}
 
 	@Override
-	public String parseUserId(String code) throws WxErrorException {
-		 WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
-		// WxMpUser wxMpUser = wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken, null);
-		 String userId = wxMpOAuth2AccessToken.getOpenId();
-		 logger.info("openId："+userId);
-		 return userId;
+	public String parseUserId(String code) {
+		if (StringUtils.isBlank(code)) {
+			return BizConst.NO_LOGIN_USER_ID;
+		}
+
+		String userId = null;
+		try {
+			WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
+			// WxMpUser wxMpUser =
+			// wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken, null);
+			userId = wxMpOAuth2AccessToken.getOpenId();
+			logger.info("openId：" + userId);
+		} catch (WxErrorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			userId = "BizConst.NO_LOGIN_USER_ID";
+		}
+		return userId;
 	}
 	
 	

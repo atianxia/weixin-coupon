@@ -9,15 +9,19 @@ document.addEventListener('touchmove', function(event) {
 //弹层layer
 function layer(btn,obj){
 	$(btn).on('click',function(){
-		//领取优惠券
-		if(obj == '.layerConCoupon'){
-			receiveCoupon($(this));
-		}else if(obj==".layerConRule"){
-			var usingRule = $(this).next().attr("value");
-			$('#usingRule').text(usingRule)
+		userOperation($(this), obj);
+		//阻止滑动
+		if($("#shadeConBlur").hide()){
+			$('html').css({
+				'position': 'fixed',
+				'height': '100%',
+				'overflow': 'hidden',
+				'width': '100%'
+			});
+
+			$('#shadeConBlur').show().addClass('show');
+			$(obj).addClass('show');
 		}
-		$('#shadeConBlur').show().addClass('show');
-		$(obj).addClass('show');
 	});
 }
 
@@ -29,6 +33,13 @@ function oClose(btn,obj){
 		var t = setTimeout(function(){
 			$('#shadeConBlur').hide();
 		},200)
+		
+		$('html').css({
+			'position': 'static',
+			'height': 'auto',
+			'overflow': 'auto',
+			'width': 'auto'
+		});
 	});
 }
 
@@ -47,6 +58,20 @@ $(function(){
 	oClose('.layerConCoupon .btn span','.layerConCoupon');
 	
 })
+
+function userOperation($this, ojb){
+	if(obj == '.layerConCoupon'){//领取优惠券
+		receiveCoupon($this);
+	}else if(obj==".layerConRule"){//查看使用规则
+		var usingRule = $this.next().attr("value");
+		var buyLink = $this.next().next().attr("value");
+		$('#usingRule').text(usingRule)
+		var ruleToUse = $('#ruleToUse');
+		if(ruleToUse){
+			$("#ruleToUse").attr("href",buyLink);
+		}
+	}
+}
 
 /**
  * 获取优惠券信息

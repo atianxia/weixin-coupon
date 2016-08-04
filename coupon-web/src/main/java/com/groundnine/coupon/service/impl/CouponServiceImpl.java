@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.groundnine.coupon.consts.BizConst;
@@ -26,12 +27,13 @@ public class CouponServiceImpl implements CouponService{
 	@Override
 	public List<CouponVo> queryCoupons(int pageNum, int rows) {
 		int offset = (pageNum - 1) * rows;
-		return this.couponDao.selectCouponList(offset, rows );
+		return this.couponDao.selectCouponList(offset, rows);
 	}
 
-	@Transactional
+	@Transactional(propagation=Propagation.REQUIRED, transactionManager="transactionManager")
 	@Override
 	public String receiveCoupon(String userId, Long couponId) {
+		//悲观锁 select for update
 		CouponItem couponItem = this.couponItemDao.selectFirstUnusedCoupon(couponId);
 		if(couponItem == null){
 			return BizConst.SELL_OUT_TEXT;

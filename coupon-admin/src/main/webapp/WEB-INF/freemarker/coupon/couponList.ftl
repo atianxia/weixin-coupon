@@ -17,10 +17,13 @@
                 <th field="couponId" width="50" formatter="formatCouponId">优惠券ID</th>
                 <th field="couponName" width="50">优惠券名称</th>
                 <th field="couponStatus" width="50" formatter="formatCouponStatus">优惠券状态</th>
+                <th field="onlineTime" width="50">优惠券上架时间</th>
+                <th field="amount" width="50">优惠券总量</th>
+                <th field="receivedTimes" width="50">已领取次数</th>
+                <th field="expireDate" width="100" >有效日期截至时间</th>
                 <th field="brandLogo" width="50">品牌标志</th>
                 <th field="usingRule" width="50">使用规则</th>
                 <th field="buyLink" width="50">购买链接</th>
-                <th field="expireDate" width="100" >有效日期截至时间</th>
                 <th field="createTime" width="100" >创建时间</th>
                 <th field="updateTime" width="100">最后更新时间</th>
             </tr>

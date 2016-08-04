@@ -20,7 +20,10 @@ public class CouponVo {
 
 	private String buyLink;
 
+	private int amount;
+	
 	private int receivedTimes;
+	
 
 	public Long getCouponId() {
 		return couponId;
@@ -68,6 +71,14 @@ public class CouponVo {
 
 	public void setBuyLink(String buyLink) {
 		this.buyLink = buyLink;
+	}
+
+	public int getAmount() {
+		return amount;
+	}
+
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 
 	public int getReceivedTimes() {

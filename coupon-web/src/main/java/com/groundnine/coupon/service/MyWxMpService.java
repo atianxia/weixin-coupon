@@ -8,5 +8,7 @@ public interface MyWxMpService {
 
 	String sendMessage(String type) throws WxErrorException;
 	
-	String parseUserId(String code) throws WxErrorException;
+	String parseUserId(String code);
+
+	String buildCouponListRedirectUri();
 }

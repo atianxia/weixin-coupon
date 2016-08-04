@@ -19,6 +19,7 @@ import com.groundnine.coupon.service.CouponService;
 import com.groundnine.coupon.service.MyWxMpService;
 import com.groundnine.coupon.vo.CouponItemVo;
 import com.groundnine.coupon.vo.CouponVo;
+import com.mchange.lang.StringUtils;
 
 import me.chanjar.weixin.common.exception.WxErrorException;
 
@@ -95,7 +96,16 @@ public class CouponController extends BaseController {
 		List<CouponItemVo> couponItems = this.couponItemService.queryUserCoupons(userId, pageNum, rows);
         mav.addObject("couponItems", couponItems);
         mav.addObject("userId", userId);
-        mav.setViewName("my_coupon.ftl");
+        String viewName;
+        
+        if(couponItems.size() == 0){
+        	viewName = "unclaimed.ftl";
+        	mav.addObject("myCouponUrl", this.myWxMpService.buildCouponListRedirectUri());
+        }else{
+        	viewName = "my_coupon.ftl";
+        }
+        	
+        mav.setViewName(couponItems.size() == 0 ? "unclaimed.ftl":"my_coupon.ftl");
         return mav;
 	}
 	

@@ -36,25 +36,7 @@
 		<constructor-arg name="wxMpService" ref="wxMpService"/>
 	</bean>
 	
-  <!--   <tx:advice id="txAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-            <tx:method name="add*"
-                       propagation="REQUIRED"
-                       isolation="REPEATABLE_READ"
-                       read-only="false"
-                       timeout="500"
-                       rollback-for="java.lang.RuntimeException"
-                       no-rollback-for="java.lang.Exception"/>
-
-            <tx:method name="*" propagation="SUPPORTS" read-only="true"/>
-        </tx:attributes>
-    </tx:advice> -->
-
-    <!-- <aop:config>
-        <aop:advisor pointcut="execution(* com.study.transaction.service.impl.TestAnnotationServiceImpl.*(..))" advice-ref="txAdvice"/>
-    </aop:config> -->
-
-    <!--<tx:annotation-driven transaction-manager="transactionManager" />-->
+    <tx:annotation-driven transaction-manager="transactionManager" />
 
 
 

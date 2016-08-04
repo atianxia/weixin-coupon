@@ -7,10 +7,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<link rel="stylesheet" type="text/css" href="${resRoot}/css/style_dev.css">
 	</head>
 	<body>
-		<#include "/common.ftl">
+		<#include "/common_top.ftl">
 		<section>
 			<div class="content">
 				<ul>
@@ -27,8 +26,12 @@
 							<s class="leftPie"></s>
 							<s class="rightPie"></s>
 						</div>
-						<div class="conBot">
-							<a href="javascript:;" class="cpLy">立即领取</a>
+						<div class="conBot_ed">
+							<#if couponInfo.amount== couponInfo.receivedTimes>
+							<a href="javascript:;" class="cpLy">已领完</a>
+							<#else>
+							<a href="javascript:;" class="gray">立即领取</a>
+							</#if>
 							<input type="hidden" id="couponId_${couponInfo.couponId}" value="${couponInfo.couponId}"/>
 							<input type="hidden" id="couponId_${couponInfo.couponId}" value="${couponInfo.buyLink}"/>
 							<span>已领取：<b>${couponInfo.receivedTimes}</b></span>
@@ -51,7 +54,7 @@
 			<div class="layerConCoupon">
 				<div class="tit"></div>
 				<strong>获得优惠券</strong>
-				<p id='couponCode'>B20160730SMZDM8138A001GH</p>
+				<p id='couponCode'></p>
 				<span>长按优惠码复制</span>
 				<div class="btn">
 					<span>取消</span>
@@ -61,7 +64,6 @@
 			</div>
 
 		</div>
+		<#include "/common_bottom.ftl">
 	</body>
-	<script src="${resRoot}/js/zepto.min.js"></script>
-	<script src="${resRoot}/js/index_dev.js"></script>
 </html>

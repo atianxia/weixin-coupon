@@ -16,6 +16,8 @@ public class CouponInfoVo {
 	private String usingRule;
 
 	private String buyLink;
+	
+	private int amount;
 
 	List<CouponItemPersistVo> couponItemPersistVos;
 
@@ -65,6 +67,14 @@ public class CouponInfoVo {
 
 	public void setBuyLink(String buyLink) {
 		this.buyLink = buyLink;
+	}
+
+	public int getAmount() {
+		return amount;
+	}
+
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 
 	public List<CouponItemPersistVo> getCouponItemPersistVos() {

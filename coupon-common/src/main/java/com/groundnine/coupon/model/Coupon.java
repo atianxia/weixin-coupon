@@ -14,6 +14,9 @@ public class Coupon {
     
     @JsonSerialize(using = CustomDateSerializer.class)  
     private Date expireDate;
+    
+    @JsonSerialize(using = CustomDateSerializer.class)  
+    private Date onlineTime;
 
     private String usingRule;
 
@@ -63,6 +66,14 @@ public class Coupon {
 
 	public void setExpireDate(Date expireDate) {
 		this.expireDate = expireDate;
+	}
+
+	public Date getOnlineTime() {
+		return onlineTime;
+	}
+
+	public void setOnlineTime(Date onlineTime) {
+		this.onlineTime = onlineTime;
 	}
 
 	public String getUsingRule() {

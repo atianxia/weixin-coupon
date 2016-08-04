@@ -104,9 +104,11 @@ public class CouponServiceImpl implements CouponService {
 					itemPersistVo.setCouponCode(couponItemVo.getCouponCode());
 					CouponInfoVo couponInfoVo = couponInfoMap.get(couponItemVo.getCouponName());
 					couponInfoVo.getCouponItemPersistVos().add(itemPersistVo);
+					couponInfoVo.setAmount(couponInfoVo.getAmount() + 1);
 				}else{
 					CouponInfoVo couponInfoVo = new CouponInfoVo();
 					BeanUtils.copyProperties(couponItemVo, couponInfoVo);
+					couponInfoVo.setAmount(1);
 					List<CouponItemPersistVo> itemPersistVos = new ArrayList<CouponItemPersistVo>();
 					CouponItemPersistVo itemPersistVo = new CouponItemPersistVo();
 					itemPersistVo.setCouponCode(couponItemVo.getCouponCode());

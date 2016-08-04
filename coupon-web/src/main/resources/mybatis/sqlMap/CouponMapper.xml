@@ -10,6 +10,7 @@
     <result column="brand_logo" property="brandLogo" jdbcType="VARCHAR" />
     <result column="using_rule" property="usingRule" jdbcType="VARCHAR" />
     <result column="buy_link" property="buyLink" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="INTEGER" />
     <result column="received_times" property="receivedTimes" jdbcType="INTEGER" />
   </resultMap>
   
@@ -21,10 +22,16 @@
 		brand_logo,
 		buy_link,
 		using_rule,
-		received_times
+		amount,
+		received_times,
+		CASE amount - received_times
+		WHEN 0 THEN 1
+		ELSE 0
+		END  as sell_out_flag
 	FROM
-		`coupon` t1
+		`coupon`
 	WHERE  is_del = 0 AND coupon_status = 1
+	ORDER BY sell_out_flag asc, online_time desc
     limit #{offset,jdbcType=INTEGER}, #{rows,jdbcType=INTEGER}
   </select>
   
