@@ -23,7 +23,7 @@
 								<input type="hidden" id="usingRule_${couponItem.couponId}" value="${couponItem.usingRule}"/>
 								<input type="hidden" id="buyLink_${couponItem.couponId}" value="${couponItem.buyLink}"/>
 							</div>
-							<img src="${imageRootPath}/${couponItem.brandLogo}">
+							<img src="${couponItem.brandLogo}">
 							<s class="leftPie"></s>
 							<s class="rightPie"></s>
 						</div>

@@ -22,11 +22,11 @@
 								<a href="javascript:;" class="ruleLy">查看使用规则</a>
 								<input type="hidden" id="usingRule_${couponInfo.couponId}" value="${couponInfo.usingRule}"/>
 							</div>
-							<img src="${imageRootPath}/${couponInfo.brandLogo}">
+							<img src="${couponInfo.brandLogo}">
 							<s class="leftPie"></s>
 							<s class="rightPie"></s>
 						</div>
-						<div class="conBot_ed">
+						<div class="conBot">
 							<#if couponInfo.amount== couponInfo.receivedTimes>
 							<a href="javascript:;" class="cpLy">已领完</a>
 							<#else>
