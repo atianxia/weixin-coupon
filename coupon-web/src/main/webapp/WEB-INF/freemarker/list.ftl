@@ -26,16 +26,7 @@
 							<s class="leftPie"></s>
 							<s class="rightPie"></s>
 						</div>
-						<#if couponInfo.amount == couponInfo.receivedTimes>
-						<div class="conBot over">
-							<a href="javascript:;" class="gray">已领完</a>
-							<div>
-								<div>
-									<span>长按优惠码复制</span>
-								</div>
-							</div>
-						</div>
-						<#elseif couponInfo.received == 1>
+						<#if couponInfo.received == 1>
 						<div class="conBot over">
 							<a href="javascript:;" class="gray">已领取</a>
 							<div>
@@ -43,6 +34,15 @@
 									<span><a href="${rootPath}/coupon/myCoupon.do?userId=${userId}" >查看我的优惠券</a></span>
 									<input type="hidden" id="couponId_${couponInfo.couponId}" value="${couponInfo.couponId}"/>
 									<input type="hidden" id="buyLink_${couponInfo.couponId}" value="${couponInfo.buyLink}"/>
+								</div>
+							</div>
+						</div>
+						<#elseif couponInfo.amount == couponInfo.receivedTimes>
+						<div class="conBot over">
+							<a href="javascript:;" class="gray">已领完</a>
+							<div>
+								<div>
+									<span>已领取：<b id="receivedTimes_${couponInfo.couponId}">${couponInfo.receivedTimes}</b></span>
 								</div>
 							</div>
 						</div>
