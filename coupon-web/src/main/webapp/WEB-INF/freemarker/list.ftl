@@ -27,10 +27,10 @@
 							<s class="rightPie"></s>
 						</div>
 						<div class="conBot">
-							<#if couponInfo.amount== couponInfo.receivedTimes>
-							<a href="javascript:;" class="cpLy">已领完</a>
+							<#if couponInfo.amount == couponInfo.receivedTimes>
+							<a href="javascript:;" class="gray">已领完</a>
 							<#else>
-							<a href="javascript:;" class="gray">立即领取</a>
+							<a href="javascript:;" class="cpLy">立即领取</a>
 							</#if>
 							<input type="hidden" id="couponId_${couponInfo.couponId}" value="${couponInfo.couponId}"/>
 							<input type="hidden" id="couponId_${couponInfo.couponId}" value="${couponInfo.buyLink}"/>
