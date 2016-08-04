@@ -29,19 +29,31 @@
 						<#if couponInfo.amount == couponInfo.receivedTimes>
 						<div class="conBot over">
 							<a href="javascript:;" class="gray">已领完</a>
-							<span>已领取：<b id="receivedTimes_${couponInfo.couponId}">${couponInfo.receivedTimes}</b></span>
+							<div>
+								<div>
+									<span>长按优惠码复制</span>
+								</div>
+							</div>
+						</div>
 						<#elseif couponInfo.received == 1>
 						<div class="conBot over">
 							<a href="javascript:;" class="gray">已领取</a>
-							<span><a href="${rootPath}/coupon/myCoupon.do?userId=${userId}" >查看我的优惠券</a></span>
+							<div>
+								<div>
+									<span><a href="${rootPath}/coupon/myCoupon.do?userId=${userId}" >查看我的优惠券</a></span>
+									<input type="hidden" id="couponId_${couponInfo.couponId}" value="${couponInfo.couponId}"/>
+									<input type="hidden" id="buyLink_${couponInfo.couponId}" value="${couponInfo.buyLink}"/>
+								</div>
+							</div>
+						</div>
 						<#else>
 						<div class="conBot">
 							<a href="javascript:;" class="cpLy">立即领取</a>
 							<span>已领取：<b id="receivedTimes_${couponInfo.couponId}">${couponInfo.receivedTimes}</b></span>
-						</#if>
 							<input type="hidden" id="couponId_${couponInfo.couponId}" value="${couponInfo.couponId}"/>
 							<input type="hidden" id="buyLink_${couponInfo.couponId}" value="${couponInfo.buyLink}"/>
 						</div>
+						</#if>
 					</li>
 					</#list>
 				</ul>
