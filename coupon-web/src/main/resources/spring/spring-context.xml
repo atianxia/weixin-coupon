@@ -32,8 +32,8 @@
 		<property name="wxMpConfigStorage"  ref="wxMpConfigStorage"/>
 	</bean>
 	
-	<bean id="wxMpMessageRouter" class="me.chanjar.weixin.mp.api.WxMpMessageRouter">
-		<constructor-arg name="wxMpService" ref="wxMpService"/>
+	<bean id="wxMpMessageRouter" class="com.groundnine.coupon.weixin.factory.WXMessageRouterFactoryBean">
+		<property name="wxMpService"  ref="wxMpService"/>
 	</bean>
 	
     <tx:annotation-driven transaction-manager="transactionManager" />
