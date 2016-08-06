@@ -129,7 +129,7 @@ public class WxMpController {
 	@RequestMapping("/makeQrCode")
 	@ResponseBody
 	public Map<String, Object> makeQrCode(@RequestParam(value="code") Integer code,
-			@RequestParam(value="page", defaultValue="3600") Integer expire_seconds, 
+			@RequestParam(value="expire_seconds", defaultValue="3600") Integer expire_seconds, 
 			HttpServletRequest request,HttpServletResponse response){
 		logger.info("生成二维码");
 		Map<String, Object> result = new HashMap<String, Object>();
