@@ -1,6 +1,8 @@
 package com.groundnine.coupon.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -11,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.groundnine.coupon.service.MyWxMpService;
@@ -23,6 +26,7 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlOutMessage;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
+import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
 
 @Controller
@@ -119,5 +123,32 @@ public class WxMpController {
 	public String rebuildMenu() throws WxErrorException {
 		this.myWxMpService.rebuildMenu();
 		return "sucess!";
+	}
+	
+	@SuppressWarnings("finally")
+	@RequestMapping("/makeQrCode")
+	@ResponseBody
+	public Map<String, Object> makeQrCode(@RequestParam(value="code") Integer code,
+			@RequestParam(value="page", defaultValue="3600") Integer expire_seconds, 
+			HttpServletRequest request,HttpServletResponse response){
+		logger.info("生成二维码");
+		Map<String, Object> result = new HashMap<String, Object>();
+		if(code == null){
+			result.put("sucess", false);
+			return result;
+		}
+		
+		try {
+			WxMpQrCodeTicket ticket = wxMpService.qrCodeCreateTmpTicket(code, expire_seconds);
+			result.put("sucess", true);
+			result.put("qrCode", ticket);
+		} catch (WxErrorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			logger.error(e.toString());
+			result.put("sucess", false);
+		}finally{
+			return result;
+		}
 	}
 }

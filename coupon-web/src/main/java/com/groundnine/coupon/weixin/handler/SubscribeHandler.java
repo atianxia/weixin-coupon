@@ -25,9 +25,28 @@ public class SubscribeHandler implements WxMpMessageHandler {
 			WxSessionManager sessionManager) throws WxErrorException {
 		logger.info("处理关注事件");
 		//	业务逻辑处理,用户入库,发放优惠劵
-		WxMpXmlOutTextMessage m
-        = WxMpXmlOutMessage.TEXT().content("发放优惠劵").fromUser(wxMessage.getToUserName())
-        .toUser(wxMessage.getFromUserName()).build();
+		int quanId = 0;
+		boolean flag = false;
+		//二维码关注的用户可能带入优惠劵Id
+		if(wxMessage.getEventKey()!=null && wxMessage.getEventKey().startsWith("qrscene_")){
+			logger.info("二维码关注用户");
+			try{
+				quanId =Integer.valueOf(wxMessage.getEventKey().split("_")[1]);
+				 flag = true;
+			}catch(Exception e){
+				logger.error(e.toString());
+			}
+			 
+		}
+		WxMpXmlOutTextMessage  m = null;
+		if(flag){
+			 m = WxMpXmlOutMessage.TEXT().content(("发放优惠劵"+quanId)).fromUser(wxMessage.getToUserName())
+	        .toUser(wxMessage.getFromUserName()).build();
+		}else{
+			 m = WxMpXmlOutMessage.TEXT().content(("欢迎关注")).fromUser(wxMessage.getToUserName())
+	        .toUser(wxMessage.getFromUserName()).build();
+		}
+		
 		return m;
 	}
 	

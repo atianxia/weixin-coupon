@@ -27,6 +27,7 @@
 		<property name="appId" value="${appId}" />
 		<property name="secret" value="${secret}" />
 		<property name="token" value="${token}" />
+		<property name="aesKey" value="${aesKey}"/>
 	</bean>
 	<bean name="wxMpService"  class="me.chanjar.weixin.mp.api.WxMpServiceImpl">
 		<property name="wxMpConfigStorage"  ref="wxMpConfigStorage"/>
