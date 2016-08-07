@@ -4,29 +4,34 @@
 
 <mapper namespace="com.groundnine.coupon.dao.CouponDao">
   <resultMap id="BaseResultMap" type="com.groundnine.coupon.model.Coupon" >
-    <id column="coupon_id" property="couponId" jdbcType="BIGINT" />
-    <result column="coupon_name" property="couponName" jdbcType="VARCHAR" />
-    <result column="coupon_status" property="couponStatus" jdbcType="TINYINT" />
-    <result column="expire_date" property="expireDate" jdbcType="TIMESTAMP" />
-    <result column="brand_logo" property="brandLogo" jdbcType="VARCHAR" />
-    <result column="using_rule" property="usingRule" jdbcType="VARCHAR" />
-    <result column="buy_link" property="buyLink" jdbcType="VARCHAR" />
-    <result column="amount" property="amount" jdbcType="INTEGER" />
-    <result column="received_times" property="receivedTimes" jdbcType="INTEGER" />
-    <result column="is_del" property="isDel" jdbcType="BIT" />
-     <result column="online_time" property="onlineTime" jdbcType="TIMESTAMP" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <id column="coupon_id" jdbcType="BIGINT" property="couponId" />
+    <result column="coupon_type" jdbcType="TINYINT" property="couponType" />
+    <result column="coupon_name" jdbcType="VARCHAR" property="couponName" />
+    <result column="coupon_status" jdbcType="TINYINT" property="couponStatus" />
+    <result column="expire_date" jdbcType="TIMESTAMP" property="expireDate" />
+    <result column="online_time" jdbcType="TIMESTAMP" property="onlineTime" />
+    <result column="brand_logo" jdbcType="VARCHAR" property="brandLogo" />
+    <result column="using_rule" jdbcType="VARCHAR" property="usingRule" />
+    <result column="local_link" jdbcType="VARCHAR" property="localLink" />
+    <result column="buy_link" jdbcType="VARCHAR" property="buyLink" />
+    <result column="amount" jdbcType="INTEGER" property="amount" />
+    <result column="received_times" jdbcType="INTEGER" property="receivedTimes" />
+    <result column="is_del" jdbcType="BIT" property="isDel" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    coupon_id, coupon_name, coupon_status, expire_date, online_time, brand_logo, using_rule, buy_link, 
-    amount, received_times, is_del, create_time, update_time
+    coupon_id, coupon_type, coupon_name, coupon_status, expire_date, online_time, brand_logo, using_rule, 
+    local_link, buy_link, amount, received_times, is_del, create_time, update_time
   </sql>
   
   <sql id="Coupon_Query_Condition">
    where is_del = 0
-    <if test="coupon.couponId != null">
+       <if test="coupon.couponId != null">
         and coupon_id = #{coupon.couponId,jdbcType=BIGINT}
+      </if>
+      <if test="coupon.couponType != null">
+        and coupon_type = #{coupon.couponType,jdbcType=BIGINT}
       </if>
       <if test="coupon.couponName != null">
         and coupon_name = #{coupon.couponName,jdbcType=VARCHAR}
@@ -36,6 +41,9 @@
       </if>
       <if test="coupon.usingRule != null">
         and using_rule = #{coupon.usingRule,jdbcType=VARCHAR}
+      </if>
+      <if test="coupon.localLink != null">
+        and local_link = #{coupon.localLink,jdbcType=VARCHAR}
       </if>
       <if test="coupon.buyLink != null">
         and buy_link = #{coupon.buyLink,jdbcType=VARCHAR}
@@ -104,8 +112,8 @@
     </selectKey>  
     insert into coupon
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="couponId != null">
-        coupon_id,
+      <if test="couponType != null">
+        coupon_type,
       </if>
       <if test="couponName != null">
         coupon_name,
@@ -119,8 +127,17 @@
       <if test="usingRule != null">
         using_rule,
       </if>
+      <if test="localLink != null">
+        local_link,
+      </if>
       <if test="buyLink != null">
         buy_link,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="receivedTimes != null">
+        received_times,
       </if>
       <if test="isDel != null" >
         is_del,
@@ -133,8 +150,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="couponId != null">
-        #{couponId,jdbcType=BIGINT},
+      <if test="couponType != null">
+        #{couponType,jdbcType=TINYINT},
       </if>
       <if test="couponName != null">
         #{couponName,jdbcType=VARCHAR},
@@ -148,8 +165,17 @@
       <if test="usingRule != null">
         #{usingRule,jdbcType=VARCHAR},
       </if>
+      <if test="localLink != null">
+        #{localLink,jdbcType=VARCHAR},
+      </if>
       <if test="buyLink != null">
         #{buyLink,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="receivedTimes != null">
+        #{receivedTimes,jdbcType=INTEGER},
       </if>
       <if test="isDel != null" >
         #{isDel,jdbcType=BIT},
@@ -181,8 +207,17 @@
       <if test="usingRule != null">
         using_rule,
       </if>
+      <if test="localLink != null">
+        local_link,
+      </if>
       <if test="buyLink != null">
         buy_link,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="receivedTimes != null">
+        received_times,
       </if>
       </trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -198,9 +233,18 @@
 	     <if test="usingRule != null">
 	       #{usingRule,jdbcType=VARCHAR},
 	     </if>
+	     <if test="localLink != null">
+	        #{localLink,jdbcType=VARCHAR},
+	      </if>
 	     <if test="buyLink != null">
 	       #{buyLink,jdbcType=VARCHAR},
 	     </if>
+	     <if test="amount != null">
+        	#{amount,jdbcType=INTEGER},
+	      </if>
+	      <if test="receivedTimes != null">
+	        #{receivedTimes,jdbcType=INTEGER},
+	      </if>
 		</trim>
  </insert>  
   
@@ -208,6 +252,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.groundnine.coupon.model.Coupon">
     update coupon
     <set>
+   	  <if test="couponType != null">
+        coupon_type = #{couponType,jdbcType=TINYINT},
+      </if>
       <if test="couponName != null">
         coupon_name = #{couponName,jdbcType=VARCHAR},
       </if>
@@ -219,6 +266,9 @@
       </if>
       <if test="usingRule != null">
         using_rule = #{usingRule,jdbcType=VARCHAR},
+      </if>
+      <if test="localLink != null">
+        local_link = #{localLink,jdbcType=VARCHAR},
       </if>
       <if test="buyLink != null">
         buy_link = #{buyLink,jdbcType=VARCHAR},

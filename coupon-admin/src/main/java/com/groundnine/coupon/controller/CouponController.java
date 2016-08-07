@@ -3,6 +3,7 @@ package com.groundnine.coupon.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -14,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.groundnine.coupon.model.Coupon;
 import com.groundnine.coupon.service.CouponService;
+import com.groundnine.coupon.service.FileUploadService;
 import com.groundnine.coupon.vo.CouponQueryVo;
 import com.groundnine.coupon.vo.CouponVo;
 
@@ -29,6 +32,9 @@ public class CouponController extends BaseController {
 	
 	@Resource
 	private CouponService couponService;
+	
+	@Resource
+	private FileUploadService fileUploadService;
 	
 	/**
 	 * 优惠券列表
@@ -90,8 +96,12 @@ public class CouponController extends BaseController {
 	 */
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	@ResponseBody
-	public ModelMap save(CouponVo couponVo) {
+	public ModelMap save(CouponVo couponVo,
+			@RequestParam(required=false)CommonsMultipartFile brandLogoFile, 
+			@RequestParam(required=false)CommonsMultipartFile localLinkFile,
+			@RequestParam(required=false)CommonsMultipartFile couponCodeFile) {
 		ModelMap map = new ModelMap();
+		this.setImageFileInfo(couponVo, brandLogoFile, localLinkFile);
 		int dbResult = this.couponService.updateCoupon(couponVo);
 		map.addAttribute("result", dbResult >0? "success" : "failed");
 		return map;
@@ -105,9 +115,14 @@ public class CouponController extends BaseController {
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	@ResponseBody
-	public ModelMap add(CouponVo couponVo) {
+	public ModelMap add(CouponVo couponVo,
+			@RequestParam(required=false)CommonsMultipartFile brandLogoFile, 
+			@RequestParam(required=false)CommonsMultipartFile localLinkFile,
+			@RequestParam(required=false)CommonsMultipartFile couponCodeFile) {
 		ModelMap map = new ModelMap();
-		int dbResult = this.couponService.addCoupon(couponVo);
+		this.setImageFileInfo(couponVo, brandLogoFile, localLinkFile);
+		Set<String> couponCodes = this.fileUploadService.parseCouponCodeExcel(couponCodeFile);
+		int dbResult = this.couponService.addCoupon(couponVo, couponCodes);
 		map.addAttribute("result", dbResult >0? "success" : "failed");
 		return map;
 	}
@@ -119,6 +134,14 @@ public class CouponController extends BaseController {
 		return mav;
 	}
 	
+	
+	private void setImageFileInfo(CouponVo couponVo, CommonsMultipartFile brandLogoFile, CommonsMultipartFile localLinkFile){
+		if(brandLogoFile == null && localLinkFile == null){
+			return;
+		}
+		couponVo.setBrandLogo(this.fileUploadService.picFileUpload(brandLogoFile));
+		couponVo.setLocalLink(this.fileUploadService.picFileUpload(localLinkFile));
+	}
 
 	
 	

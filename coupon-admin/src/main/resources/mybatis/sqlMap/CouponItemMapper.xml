@@ -50,6 +50,19 @@
          #{couponItem.couponCode})
      </foreach> 
   </insert>
+  
+  <insert id="batchInsertCouponItem" >
+     
+       INSERT INTO `coupon_item` (
+		`coupon_id`,
+		`coupon_code`
+		)
+		VALUES
+	 <foreach collection="couponCodes" separator="," item="couponCode">
+        ( #{couponId},
+         #{couponCode})
+     </foreach> 
+  </insert>
   <insert id="insert" parameterType="com.groundnine.coupon.model.CouponItem" >
     insert into coupon_item
     <trim prefix="(" suffix=")" suffixOverrides="," >

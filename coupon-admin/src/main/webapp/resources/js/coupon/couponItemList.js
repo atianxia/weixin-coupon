@@ -103,7 +103,24 @@ function doSearch(type) {
 		}, {
 			field : 'receiveTime',
 			title : '领取时间',
-			align : 'center'
+			align : 'center',
+			formatter : function(val, rec) {
+				return formattime(val);
+			}
+		}, {
+			field : 'createTime',
+			title : '创建时间',
+			align : 'center',
+			formatter : function(val, rec) {
+				return formattime(val);
+			}
+		}, {
+			field : 'updateTime',
+			title : '更新时间',
+			align : 'center',
+			formatter : function(val, rec) {
+				return formattime(val);
+			}
 		}  ] ]
 	});
 }

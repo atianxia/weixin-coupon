@@ -1,5 +1,7 @@
 package com.groundnine.coupon.service.impl;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,14 +11,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -32,6 +37,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.google.common.collect.Sets;
 import com.groundnine.coupon.dao.CouponDao;
 import com.groundnine.coupon.dao.CouponItemDao;
 import com.groundnine.coupon.service.FileUploadService;
@@ -57,6 +63,9 @@ public class FileUploadServiceImpl implements FileUploadService {
 
 	@Override
 	public String picFileUpload(CommonsMultipartFile file) {
+		if(file == null || file.isEmpty()){
+			return null;
+		}
 //		 String pic_path =  request.getSession().getServletContext().getRealPath("/images/"); 
 //		 String pic_path = "D://images//";
 		 String pic_time = new  SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());   
@@ -257,4 +266,46 @@ public class FileUploadServiceImpl implements FileUploadService {
 		
 	}
 
+
+	@Override
+	public Set<String> parseCouponCodeExcel(CommonsMultipartFile couponCodeFile) {
+		if(couponCodeFile == null || couponCodeFile.isEmpty()){
+			return Sets.newHashSet();
+		}
+		Set<String> coupons = new HashSet<String>();
+		InputStream inputStream = null;
+		Workbook wb;
+		try {
+			inputStream = couponCodeFile.getInputStream();
+			wb = WorkbookFactory.create(inputStream);
+			Sheet sheet = wb.getSheetAt(0);// 取得第一个sheets
+
+			//从第四行开始读取数据
+			for (int i = 0; i <= sheet.getLastRowNum(); i++) {
+
+				Row row = sheet.getRow(i); // 获取行(row)对象
+				if (row == null) {
+					// row为空的话,不处理
+					continue;
+				}
+				String couponCode = CouponExcelHelper.convertCellStr(row.getCell(0));
+				coupons.add(couponCode);
+			}
+		} catch (InvalidFormatException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (inputStream != null) {
+				try {
+					couponCodeFile.getInputStream().close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+			}
+		}
+
+		return coupons;
+	}
 }

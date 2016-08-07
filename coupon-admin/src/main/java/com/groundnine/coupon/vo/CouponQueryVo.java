@@ -6,7 +6,9 @@ public class CouponQueryVo {
 	
 
     private Long couponId;
-
+    
+    private Integer couponType;
+    
     private String couponName;
 
     private Date expireDate;
@@ -14,6 +16,8 @@ public class CouponQueryVo {
     private String brandLogo;
 
     private String usingRule;
+    
+    private String localLink;
 
     private String buyLink;
 
@@ -27,6 +31,14 @@ public class CouponQueryVo {
 
 	public void setCouponId(Long couponId) {
 		this.couponId = couponId;
+	}
+
+	public Integer getCouponType() {
+		return couponType;
+	}
+
+	public void setCouponType(Integer couponType) {
+		this.couponType = couponType;
 	}
 
 	public String getCouponName() {
@@ -59,6 +71,14 @@ public class CouponQueryVo {
 
 	public void setUsingRule(String usingRule) {
 		this.usingRule = usingRule;
+	}
+
+	public String getLocalLink() {
+		return localLink;
+	}
+
+	public void setLocalLink(String localLink) {
+		this.localLink = localLink;
 	}
 
 	public String getBuyLink() {

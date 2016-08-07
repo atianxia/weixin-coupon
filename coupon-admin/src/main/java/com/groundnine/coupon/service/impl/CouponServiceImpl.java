@@ -2,13 +2,16 @@ package com.groundnine.coupon.service.impl;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Function;
 import com.google.common.base.Splitter;
@@ -76,11 +79,17 @@ public class CouponServiceImpl implements CouponService {
 		return this.couponDao.updateByPrimaryKeySelective(coupon);
 	}
 
+	@Transactional(rollbackFor={RuntimeException.class,Exception.class})
 	@Override
-	public int addCoupon(CouponVo couponVo) {
+	public int addCoupon(CouponVo couponVo, Set<String> couponCodes) {
 		Coupon coupon = new Coupon();
 		BeanUtils.copyProperties(couponVo, coupon);
-		return this.couponDao.insert(coupon);
+		coupon.setAmount(couponCodes.size());
+		int dbResut = this.couponDao.insert(coupon);
+		if(dbResut>0 && CollectionUtils.isNotEmpty(couponCodes)){
+			this.couponItemDao.batchInsertCouponItem(coupon.getCouponId(), couponCodes);
+		}
+		return dbResut;
 	}
 
 	@Override

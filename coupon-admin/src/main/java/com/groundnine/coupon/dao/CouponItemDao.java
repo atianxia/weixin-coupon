@@ -1,6 +1,7 @@
 package com.groundnine.coupon.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import com.groundnine.coupon.vo.CouponItemQueryVo;
 import org.apache.ibatis.annotations.Param;
@@ -14,6 +15,8 @@ public interface CouponItemDao {
     int insert(CouponItem record);
     
     int batchInsert(@Param("coupon")CouponInfoVo couponInfoVo);
+    
+    int batchInsertCouponItem(@Param("couponId")Long couponId, @Param("couponCodes")Set<String> couponCodes);
 
     List<CouponItem> selectByCouponId(@Param("couponId") Long couponId);
 

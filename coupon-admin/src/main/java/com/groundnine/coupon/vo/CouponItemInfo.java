@@ -2,6 +2,8 @@ package com.groundnine.coupon.vo;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class CouponItemInfo {
 	
 	private Long couponId;
@@ -14,10 +16,13 @@ public class CouponItemInfo {
 
     private String userId;
     
+    @DateTimeFormat( pattern = "yyyy-MM-dd HH:mm:ss" )
     private Date receiveTime;
     
+    @DateTimeFormat( pattern = "yyyy-MM-dd HH:mm:ss" )
     private Date createTime;
 
+    @DateTimeFormat( pattern = "yyyy-MM-dd HH:mm:ss" )
     private Date updateTime;
 
 	public Long getCouponId() {

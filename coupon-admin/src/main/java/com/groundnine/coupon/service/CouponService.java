@@ -1,7 +1,7 @@
 package com.groundnine.coupon.service;
 
-import java.io.InputStream;
 import java.util.List;
+import java.util.Set;
 
 import com.groundnine.coupon.model.Coupon;
 import com.groundnine.coupon.vo.CouponQueryVo;
@@ -19,7 +19,7 @@ public interface CouponService {
 
 	int updateCoupon(CouponVo couponVo);
 
-	int addCoupon(CouponVo couponVo);
+	int addCoupon(CouponVo couponVo, Set<String> couponCodes);
 
 	int operateCouponStatusByIds(String couponIds, Integer operateType);
 }
