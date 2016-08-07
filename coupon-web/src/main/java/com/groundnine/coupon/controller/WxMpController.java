@@ -125,6 +125,15 @@ public class WxMpController {
 		return "sucess!";
 	}
 	
+	/**
+	 * 二维码地址
+	 * https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=${ticker} 
+	 * @param code
+	 * @param expire_seconds
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@SuppressWarnings("finally")
 	@RequestMapping("/makeQrCode")
 	@ResponseBody
