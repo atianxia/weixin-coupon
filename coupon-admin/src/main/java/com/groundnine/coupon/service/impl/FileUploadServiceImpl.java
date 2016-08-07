@@ -45,6 +45,7 @@ import com.groundnine.coupon.vo.CouponItemVo;
 
 @Service
 public class FileUploadServiceImpl implements FileUploadService {
+	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Resource
 	private CouponDao couponDao;
@@ -57,6 +58,8 @@ public class FileUploadServiceImpl implements FileUploadService {
 	
 	@Value("${server.host}/${images.path}")
 	private String imagesPath;
+	
+	
 
 	@Override
 	public String picFileUpload(CommonsMultipartFile file) {
@@ -65,9 +68,12 @@ public class FileUploadServiceImpl implements FileUploadService {
 		}
 //		 String pic_path =  request.getSession().getServletContext().getRealPath("/images/"); 
 //		 String pic_path = "D://images//";
-		 String pic_time = new  SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());   
+		String fileName = file.getName();
+		 String pic_time = new  SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())+fileName+(Math.random());
+		 logger.info("pic_time"+pic_time);
 	     String pic_type = file.getContentType();
 	     String file_ture_name = MD5Util.stringMD5(pic_time);
+	     logger.info("file_ture_name:"+file_ture_name);
 	     
 	     if(pic_type.equals("image/jpeg")){
 	         file_ture_name =   file_ture_name.concat(".jpg");

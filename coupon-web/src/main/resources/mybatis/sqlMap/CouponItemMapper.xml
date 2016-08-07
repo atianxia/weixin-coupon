@@ -28,7 +28,8 @@
   
   <update id="updateCouponCodeToUsed" >
 	  UPDATE coupon_item
-		SET user_id =  #{userId,jdbcType=VARCHAR}
+		SET user_id =  #{userId,jdbcType=VARCHAR},
+		received_time = now()
 	  WHERE
 		id = #{id,jdbcType=BIGINT}
   </update>

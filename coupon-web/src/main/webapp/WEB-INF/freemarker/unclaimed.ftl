@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>兑换中心</title>
+		<title>我的优惠券</title>
 		<meta name="author" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -13,7 +13,7 @@
 		<section>
 			<div class="content unclm">
 				<p>还未领取优惠券，快去领取吧！</p>
-				<a href="${couponListUrl}">去领取</a>
+				<a href="${couponListUrl}?userId=${userId}">去领取</a>
 			</div>
 		</section>
 		<div id="shadeConBlur" style="display:none;">
