@@ -57,8 +57,8 @@ public class WXMessageRouterFactoryBean  implements FactoryBean<WxMpMessageRoute
 			public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService wxMpService,
 					WxSessionManager sessionManager) throws WxErrorException {
 				WxMpXmlOutTextMessage message = WxMpXmlOutTextMessage.TEXT().
-						fromUser(wxMessage.getFromUserName())
-						.toUser(wxMessage.getToUserName())
+						fromUser(wxMessage.getToUserName())
+						.toUser(wxMessage.getFromUserName())
 						.content("dog")
 						.build();
 				return message;
