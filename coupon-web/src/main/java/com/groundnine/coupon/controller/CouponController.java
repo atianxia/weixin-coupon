@@ -34,6 +34,7 @@ public class CouponController extends BaseController {
 	
 	@Resource
 	private CouponService couponService;
+	
 	@Resource
 	private CouponItemService couponItemService;
 	
@@ -111,6 +112,23 @@ public class CouponController extends BaseController {
         }
         	
         mav.setViewName(viewName);
+        return mav;
+	}
+	
+	@RequestMapping(value = "/detail", method = {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView detail(
+			@RequestParam(value="userId", required=false) String userId,
+			@RequestParam(value="couponId", required=true) Long couponId,
+			@RequestParam(value="code", required=false) String code) throws WxErrorException {
+		logger.info("微信公众号code：" + code);
+		ModelAndView mav = new ModelAndView();
+		if(StringUtils.isBlank(userId)){
+			 userId = this.myWxMpService.parseUserId(code);
+		}
+		CouponVo couponInfo = this.couponService.getCouponInfoById(couponId);
+        mav.addObject("couponInfo", couponInfo);
+        mav.addObject("userId", userId);
+        mav.setViewName("detail.ftl");
         return mav;
 	}
 	

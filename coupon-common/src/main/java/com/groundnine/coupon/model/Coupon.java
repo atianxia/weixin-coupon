@@ -7,6 +7,8 @@ import com.groundnine.coupon.util.CustomDateSerializer;
 
 public class Coupon {
     private Long couponId;
+    
+    private Integer couponType;
 
     private String couponName;
     
@@ -19,7 +21,9 @@ public class Coupon {
     private Date onlineTime;
 
     private String usingRule;
-
+    
+    private String localLink;
+    
     private String buyLink;
 
     private Integer amount;
@@ -42,6 +46,14 @@ public class Coupon {
 
 	public void setCouponId(Long couponId) {
 		this.couponId = couponId;
+	}
+
+	public Integer getCouponType() {
+		return couponType;
+	}
+
+	public void setCouponType(Integer couponType) {
+		this.couponType = couponType;
 	}
 
 	public String getCouponName() {
@@ -90,6 +102,14 @@ public class Coupon {
 
 	public void setBuyLink(String buyLink) {
 		this.buyLink = buyLink;
+	}
+	
+	public String getLocalLink() {
+		return localLink;
+	}
+
+	public void setLocalLink(String localLink) {
+		this.localLink = localLink;
 	}
 
 	public Integer getAmount() {

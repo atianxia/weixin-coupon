@@ -80,6 +80,10 @@ $(function(){
 
 function userOperation($this, obj){
 	if(obj == '.layerConCoupon'){//领取优惠券
+		var couponType = $this.next().attr("value");
+		if(couponType !=0){
+			return;
+		}
 		receiveCoupon($this);
 	}else if(obj==".layerConRule"){//查看使用规则
 		var usingRule = $this.next().attr("value");
@@ -101,8 +105,8 @@ function userOperation($this, obj){
 function receiveCoupon(obj){
 	var rootPath = $("#rootPath").val();
 	var receiveAjaxUrl= rootPath + "/coupon/receive.do"
-	var couponId = $(obj).next().next().attr("value");
-	var buyLink = $(obj).next().next().next().attr("value");
+	var couponId = $(obj).next().next().next().attr("value");
+	var buyLink = $(obj).next().next().next().next().attr("value");
 	var userId = $('#userId').val();
 	$.ajax({
 			url : receiveAjaxUrl,
@@ -119,10 +123,24 @@ function receiveCoupon(obj){
 					$("#receivedTimes_" + couponId).text(json.receivedTimes);
 					$("#couponCode").text(json.couponCode);
 					$("#toUse").attr("href",buyLink);
+					buildhtml($(obj))
 				}
 			},
 			error : function(e) {
 			}
 	});
+}
+
+function buildhtml($this){
+	$this.parent().attr("class", "conBot over");
+	
+	var myCouponUrl = $('#rootPath').val()+'/coupon/myCoupon.do?userId='+$('#userId').val();
+	$this.parent().html(
+	'<a href="javascript:;" class="gray">已领取</a>' + 
+	'<div>' + 
+		'<div>' + 
+			'<span><a href="' + myCouponUrl +'" >查看我的优惠券</a></span>' + 
+		'</div>' + 
+	'</div>');
 }
 

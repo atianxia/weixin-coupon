@@ -235,7 +235,7 @@ table {
 	left: 50%;
 	margin-left: -40%;
 	top:50%;
-	margin-top: -160px;
+	margin-top: -110px;
 	background-color: #fff;
 	padding:20px;
 	border-radius: 5px;
@@ -278,13 +278,18 @@ table {
 	box-shadow: 1px 2px 3px #dfcece;
 	float: right;
 }
-.layerConCoupon .tit{
+.layerConCoupon .tit,.layerConCoupon .bg{
     margin: -156px auto 0;
 	position: relative;
 	width: 100%;
 	height: 170px;
-	background: url(../img/bgTit.png) no-repeat center 110px / 211px,
-				url(../img/bgLight.png) no-repeat center 19px / 292px;
+	background: url(../img/bgTit.png) no-repeat center 110px / 211px;
+    z-index: 101;
+}
+.layerConCoupon .bg{
+	background: url(../img/bgLight.png) no-repeat center 19px / 246px;
+	margin-top: -298px;
+    z-index: 100;
 }
 .layerConCoupon strong{
 	font-size: 1.6rem;
@@ -299,8 +304,12 @@ table {
 	display: block;
 }
 .layerConCoupon>span{
-	color: #ff5656;
+	color: #999;
 	margin-top: 15px;
+	font-size: 12px;
+}
+.layerConCoupon>span.gray{
+	color: #8f8f8f;
 }
 .layerConRule.show,.layerConCoupon.show{
 	transform:scale(1);
@@ -345,4 +354,79 @@ table {
 		text-decoration: none;
 	}
 
+}
+
+/*detal*/
+.place{
+	height: 10px !important;
+	background: #fafafa !important;
+	padding:0 !important;
+	border: 0 !important;
+}
+.content.detail{
+	padding: 0;
+}
+.content.detail>div{
+	background: #fff;
+	padding: 15px 20px;
+	border-top: 1px solid #e2e1e1;
+	border-bottom: 1px solid #e2e1e1;
+}
+.content.detail>div:first-child{
+	border-top:0;
+	padding-bottom: 20px;
+}
+.content.detail>div:last-child{
+	margin:0;
+	border-bottom:0;
+}
+.content.detail .conTit img{
+	max-width: 150px;
+	margin: 15px auto 30px;
+	display: block;
+}
+.content.detail .conTit h3{
+	color: #333;
+	font-weight: normal;
+	text-align: center;
+}
+.content.detail .conTit div{
+	width: 100%;
+	margin-top: 15px;
+	text-align: center;
+}
+.content.detail .conTit div span{
+	width: 50%;
+	color: #999;
+	padding: 0 5px;
+	font-size: 12px;
+}
+.content.detail .conTxt{
+	min-height: 365px;
+}
+.content.detail .conTxt .btn{
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	left:0;
+	padding: 15px 20px;
+}
+.content.detail .conTxt .btn a{
+	width: 100%;
+	display: block;
+	line-height: 36px;
+	text-align: center;
+	color: #fff;
+	font-size: 16px;
+	border-radius: 3px;
+	bottom: 0;
+	left:0;
+	background: #ff5656;
+	text-decoration: none;
+}
+.content.detail .conTxt p{
+	font-size: 14px;
+	color: #666;
+	line-height: 22px;
+	margin-bottom: 20px;
 }

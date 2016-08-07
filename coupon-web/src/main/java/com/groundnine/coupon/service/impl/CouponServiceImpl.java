@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +50,17 @@ public class CouponServiceImpl implements CouponService{
 		couponReceiveVo.setCouponCode(couponItem.getCouponCode());
 		couponReceiveVo.setReceivedTimes(coupon.getReceivedTimes()+1);
 		return couponReceiveVo;
+	}
+
+	@Override
+	public CouponVo getCouponInfoById(Long couponId) {
+		Coupon coupon = this.couponDao.selectCouponByCouponId(couponId);
+		CouponVo couponVo = null;
+		if(coupon != null){
+			couponVo = new CouponVo();
+			BeanUtils.copyProperties(coupon, couponVo);
+		}
+		return couponVo;
 	}
 
 }

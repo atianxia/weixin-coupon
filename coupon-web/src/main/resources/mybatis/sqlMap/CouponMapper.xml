@@ -5,32 +5,36 @@
 <mapper namespace="com.groundnine.coupon.dao.CouponDao">
 
 <resultMap id="BaseResultMap" type="com.groundnine.coupon.model.Coupon" >
-    <id column="coupon_id" property="couponId" jdbcType="BIGINT" />
-    <result column="coupon_name" property="couponName" jdbcType="VARCHAR" />
-    <result column="coupon_status" property="couponStatus" jdbcType="TINYINT" />
-    <result column="expire_date" property="expireDate" jdbcType="TIMESTAMP" />
-    <result column="brand_logo" property="brandLogo" jdbcType="VARCHAR" />
-    <result column="using_rule" property="usingRule" jdbcType="VARCHAR" />
-    <result column="buy_link" property="buyLink" jdbcType="VARCHAR" />
-    <result column="amount" property="amount" jdbcType="INTEGER" />
-    <result column="received_times" property="receivedTimes" jdbcType="INTEGER" />
-    <result column="is_del" property="isDel" jdbcType="BIT" />
-     <result column="online_time" property="onlineTime" jdbcType="TIMESTAMP" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <id column="coupon_id" jdbcType="BIGINT" property="couponId" />
+    <result column="coupon_type" jdbcType="TINYINT" property="couponType" />
+    <result column="coupon_name" jdbcType="VARCHAR" property="couponName" />
+    <result column="coupon_status" jdbcType="TINYINT" property="couponStatus" />
+    <result column="expire_date" jdbcType="TIMESTAMP" property="expireDate" />
+    <result column="online_time" jdbcType="TIMESTAMP" property="onlineTime" />
+    <result column="brand_logo" jdbcType="VARCHAR" property="brandLogo" />
+    <result column="using_rule" jdbcType="VARCHAR" property="usingRule" />
+    <result column="local_link" jdbcType="VARCHAR" property="localLink" />
+    <result column="buy_link" jdbcType="VARCHAR" property="buyLink" />
+    <result column="amount" jdbcType="INTEGER" property="amount" />
+    <result column="received_times" jdbcType="INTEGER" property="receivedTimes" />
+    <result column="is_del" jdbcType="BIT" property="isDel" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   
    <sql id="Base_Column_List">
-    coupon_id, coupon_name, coupon_status, expire_date, online_time, brand_logo, using_rule, buy_link, 
-    amount, received_times, is_del, create_time, update_time
+    coupon_id, coupon_type, coupon_name, coupon_status, expire_date, online_time, brand_logo, using_rule, 
+    local_link, buy_link, amount, received_times, is_del, create_time, update_time
   </sql>
   
  <resultMap id="CouponListResultMap" type="com.groundnine.coupon.vo.CouponVo" >
     <id column="coupon_id" property="couponId" jdbcType="BIGINT" />
+    <result column="coupon_type" jdbcType="TINYINT" property="couponType" />
     <result column="coupon_name" property="couponName" jdbcType="VARCHAR" />
     <result column="expire_date" property="expireDate" jdbcType="TIMESTAMP" />
     <result column="brand_logo" property="brandLogo" jdbcType="VARCHAR" />
     <result column="using_rule" property="usingRule" jdbcType="VARCHAR" />
+    <result column="local_link" jdbcType="VARCHAR" property="localLink" />
     <result column="buy_link" property="buyLink" jdbcType="VARCHAR" />
     <result column="amount" property="amount" jdbcType="INTEGER" />
     <result column="received_times" property="receivedTimes" jdbcType="INTEGER" />
@@ -40,9 +44,11 @@
   <select id="selectCouponList" resultMap="CouponListResultMap">
    	SELECT
 	t1.coupon_id,
+	t1.coupon_type,
 	t1.coupon_name,
 	t1.expire_date,
 	t1.brand_logo,
+	t1.local_link,
 	t1.buy_link,
 	t1.using_rule,
 	t1.amount,
