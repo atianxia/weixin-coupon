@@ -16,7 +16,6 @@ import com.groundnine.coupon.util.RiskControlHelper;
  * Handles requests for the application home page.
  */
 @Controller
-@RequestMapping("/")
 public class HomeController  extends BaseController {
 	@Resource
 	private RiskControlHelper riskControlHelper;
