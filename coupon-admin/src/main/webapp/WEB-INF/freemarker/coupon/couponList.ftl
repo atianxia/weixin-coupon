@@ -102,13 +102,12 @@
         <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveCoupon()" style="width:90px">Save</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
     </div>
-    <br><br><br><br>
+   	<br><br><br><br>
     <form id="uploadForm"  method="post"  enctype="multipart/form-data">
-        选择优惠券码文件：　
+              选择优惠券码excel文件：　
        <input id="uploadExcel" name="uploadExcel" class="easyui-filebox" style="width:200px" data-options="prompt:'请选择文件...'">
-	   　　<a href="javascript:void(0)" class="easyui-linkbutton" style="width:122px" onclick="uploadExcel()" >导入Excel优惠券</a> 　　     　　　　　    
-    </form> 
-    
+	   　　<a href="javascript:void(0)" class="easyui-linkbutton" style="width:122px" onclick="uploadExcel()" >导入优惠券码</a> 　　     　　　　　    
+    </form>      
     
     <style type="text/css">
         #fm{

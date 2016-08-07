@@ -8,17 +8,21 @@ function uploadExcel(){
 		$.messager.alert('提示','请勾选券码对应的优惠券！','info');
 		return;
 	}
+	if(row.couponType != 0){
+		$.messager.alert('提示','请选中本地领取券类型！','info');
+		return;
+	}
 	$('#uploadForm').form('submit',{
         url: "import.do?couponId="+row.couponId,
         onSubmit: function(){//得到上传文件的全路径
 	       	 var fileName= $('#uploadExcel').filebox('getValue');
 	    	 //进行基本校验
 	    	 if(fileName==""){   
-	    		$.messager.alert('提示','请选择上传文件！','info'); 
+	    		$.messager.alert('提示','请选择券码excel文件！','info'); 
 	    	 }else{
 	    		 //对文件格式进行校验
 	    		 var d1=/\.[^\.]+$/.exec(fileName); 
-	    		 if(d1!=".xls"){
+	    		 if(d1!=".xls" && d1!=".xlsx"){
 	    	    	 $.messager.alert('提示','请选择xls格式文件！','info'); 
 	    	    	 $('#uploadExcel').filebox('setValue',''); 
 	    	     }
@@ -70,7 +74,7 @@ function newCoupon(){
 function editCoupon(){
     var row = $('#dg').datagrid('getSelected');
     if (row){
-    	if(couponType == 1){
+    	if(row.couponType == 1){
     		$('#localLinkRow').removeAttr("style");
     	}else{
     		$('#localLinkRow').css("display", "none");
@@ -78,7 +82,6 @@ function editCoupon(){
         $('#dlg').dialog('open').dialog('center').dialog('setTitle','编辑优惠券');
         $('#fm').form('load',row);
         url = 'save.do?couponId='+row.couponId;
-        
     }
     beforeSubmit=null;
     
