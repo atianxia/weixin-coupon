@@ -97,7 +97,7 @@ public class MyWxMpServiceImpl implements MyWxMpService {
 	@Override
 	public String parseUserId(String code) {
 		if (StringUtils.isBlank(code)) {
-			return BizConst.NO_LOGIN_USER_ID;
+			return null;
 		}
 
 		String userId = null;

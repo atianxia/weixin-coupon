@@ -23,18 +23,31 @@
 	WHERE
 		coupon_id =  #{couponId,jdbcType=BIGINT} 
 		and user_id = '' 
-		limit 1 FOR UPDATE;
+		limit 1 FOR UPDATE
   </select>
+  
+  <select id="selectUserHasReceivedThisCoupon" resultMap="BaseResultMap">
+  	SELECT
+		<include refid="Base_Column_List" />
+	FROM
+		`coupon_item`
+	WHERE
+		coupon_id =  #{couponId,jdbcType=BIGINT} 
+		and user_id =  #{userId,jdbcType=VARCHAR} 
+		limit 1
+  </select>
+  
   
   <update id="updateCouponCodeToUsed" >
 	  UPDATE coupon_item
 		SET user_id =  #{userId,jdbcType=VARCHAR},
-		received_time = now()
+		receive_time = now()
 	  WHERE
 		id = #{id,jdbcType=BIGINT}
   </update>
   
   <resultMap id="UserCouponResultMap" type="com.groundnine.coupon.vo.CouponItemVo" >
+    <result column="coupon_id" property="couponId" jdbcType="BIGINT" />
     <result column="coupon_name" property="couponName" jdbcType="VARCHAR" />
     <result column="expire_date" property="expireDate" jdbcType="TIMESTAMP" />
     <result column="brand_logo" property="brandLogo" jdbcType="VARCHAR" />
@@ -44,7 +57,7 @@
     <result column="receive_time" property="receiveTime" jdbcType="TIMESTAMP" />
   </resultMap>
   
-  <select id="selectUserCouponList" resultMap="UserCouponResultMap">
+  <select id="selectUserCouponItemList" resultMap="UserCouponResultMap">
   	SELECT
 		t1.coupon_id,
 		t1.coupon_name,

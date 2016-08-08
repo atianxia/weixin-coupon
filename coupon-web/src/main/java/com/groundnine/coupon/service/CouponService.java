@@ -11,6 +11,6 @@ public interface CouponService {
 
 	CouponReceiveVo receiveCoupon(String userId, Long couponId);
 
-	CouponVo getCouponInfoById(Long couponId);
+	CouponVo getCouponInfoById(String userId, Long couponId);
 
 }

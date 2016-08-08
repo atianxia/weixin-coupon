@@ -13,5 +13,7 @@ public interface CouponItemDao {
 
 	int updateCouponCodeToUsed(@Param("userId") String userId, @Param("id") Long id);
 
-	List<CouponItemVo> selectUserCouponList(@Param("userId")String userId, @Param("offset")int offset, @Param("rows")int rows);
+	List<CouponItemVo> selectUserCouponItemList(@Param("userId")String userId, @Param("offset")int offset, @Param("rows")int rows);
+
+	CouponItem selectUserHasReceivedThisCoupon(@Param("userId")String userId, @Param("couponId")Long couponId);
 }

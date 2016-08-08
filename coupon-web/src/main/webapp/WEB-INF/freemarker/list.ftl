@@ -25,6 +25,7 @@
 								<a href="javascript:;" class="ruleLy">查看使用规则</a>
 								</#if>
 								<input type="hidden" id="usingRule_${couponInfo.couponId}" value="${couponInfo.usingRule}"/>
+								<input type="hidden" id="couponType_${couponInfo.couponId}" value="${couponInfo.couponType}"/>
 							</div>
 							<img src="${couponInfo.brandLogo}">
 							<s class="leftPie"></s>

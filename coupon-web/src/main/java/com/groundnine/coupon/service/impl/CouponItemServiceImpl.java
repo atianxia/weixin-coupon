@@ -17,9 +17,9 @@ public class CouponItemServiceImpl implements CouponItemService {
 	private CouponItemDao couponItemDao;
 
 	@Override
-	public List<CouponItemVo> queryUserCoupons(String userId, int pageNum, int rows) {
+	public List<CouponItemVo> queryUserCouponItems(String userId, int pageNum, int rows) {
 		int offset = (pageNum - 1) * rows;
-		return this.couponItemDao.selectUserCouponList(userId, offset, rows);
+		return this.couponItemDao.selectUserCouponItemList(userId, offset, rows);
 	}
 
 }

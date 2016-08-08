@@ -99,7 +99,7 @@ public class CouponController extends BaseController {
 			
 		}
 		ModelAndView mav = new ModelAndView();
-		List<CouponItemVo> couponItems = this.couponItemService.queryUserCoupons(userId, pageNum, rows);
+		List<CouponItemVo> couponItems = this.couponItemService.queryUserCouponItems(userId, pageNum, rows);
         mav.addObject("couponItems", couponItems);
         mav.addObject("userId", userId);
         String viewName;
@@ -125,7 +125,7 @@ public class CouponController extends BaseController {
 		if(StringUtils.isBlank(userId)){
 			 userId = this.myWxMpService.parseUserId(code);
 		}
-		CouponVo couponInfo = this.couponService.getCouponInfoById(couponId);
+		CouponVo couponInfo = this.couponService.getCouponInfoById(userId, couponId);
         mav.addObject("couponInfo", couponInfo);
         mav.addObject("userId", userId);
         mav.setViewName("detail.ftl");

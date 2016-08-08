@@ -27,7 +27,7 @@
     local_link, buy_link, amount, received_times, is_del, create_time, update_time
   </sql>
   
- <resultMap id="CouponListResultMap" type="com.groundnine.coupon.vo.CouponVo" >
+ <resultMap id="UserCouponResultMap" type="com.groundnine.coupon.vo.CouponVo" >
     <id column="coupon_id" property="couponId" jdbcType="BIGINT" />
     <result column="coupon_type" jdbcType="TINYINT" property="couponType" />
     <result column="coupon_name" property="couponName" jdbcType="VARCHAR" />
@@ -41,7 +41,7 @@
     <result column="received" property="received" jdbcType="INTEGER" />
   </resultMap>
   
-  <select id="selectCouponList" resultMap="CouponListResultMap">
+  <select id="selectCouponList" resultMap="UserCouponResultMap">
    	SELECT
 	t1.coupon_id,
 	t1.coupon_type,
@@ -102,5 +102,45 @@
     <include refid="Base_Column_List" />
     from coupon
     where coupon_id = #{couponId,jdbcType=BIGINT}
+  </select>
+  
+   <select id="selectUserCouponById" resultMap="UserCouponResultMap">
+	   SELECT
+			coupon_id,
+			coupon_type,
+			coupon_name,
+			expire_date,
+			brand_logo,
+			local_link,
+			buy_link,
+			using_rule,
+			amount,
+			received_times,
+			
+			CASE amount - received_times
+			WHEN 0 THEN
+				1
+			ELSE
+				0
+			END AS sell_out_flag,
+			
+			CASE
+			WHEN (
+				SELECT
+					coupon_id
+				FROM
+					coupon_item
+				WHERE
+					user_id = #{userId,jdbcType=VARCHAR}
+				AND coupon_id = #{couponId,jdbcType=BIGINT}
+			)  is NULL THEN
+				0
+			ELSE
+				1
+			END AS received
+			
+		FROM
+			`coupon`
+		where coupon_id = #{couponId,jdbcType=BIGINT}
   </select>
 </mapper>

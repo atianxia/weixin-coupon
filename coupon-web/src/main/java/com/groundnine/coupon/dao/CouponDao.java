@@ -14,5 +14,7 @@ public interface CouponDao {
 	int increaseCouponReceivedTimes(@Param("couponId")Long couponId);
 
 	Coupon selectCouponByCouponId(@Param("couponId") Long couponId);
+	
+	CouponVo selectUserCouponById(@Param("userId")String userId, @Param("couponId") Long couponId);
 
 }

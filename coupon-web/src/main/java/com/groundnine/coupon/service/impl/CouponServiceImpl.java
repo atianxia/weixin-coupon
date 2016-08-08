@@ -4,12 +4,13 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.groundnine.coupon.consts.BizConst;
+import com.groundnine.coupon.consts.ResponseCodeEnum;
 import com.groundnine.coupon.dao.CouponDao;
 import com.groundnine.coupon.dao.CouponItemDao;
 import com.groundnine.coupon.model.Coupon;
@@ -36,13 +37,29 @@ public class CouponServiceImpl implements CouponService{
 	@Transactional(propagation=Propagation.REQUIRED, transactionManager="transactionManager")
 	@Override
 	public CouponReceiveVo receiveCoupon(String userId, Long couponId) {
-		//悲观锁 select for update
 		CouponReceiveVo couponReceiveVo = new CouponReceiveVo();
+		//判断用户是否登陆
+		if(StringUtils.isBlank(userId)){
+			couponReceiveVo.setResponseCode(ResponseCodeEnum.NOT_LOGIN.getCode());
+			return couponReceiveVo;
+		}
+		
+		//用户是否已经领取过
+		CouponItem userCouponItem = this.couponItemDao.selectUserHasReceivedThisCoupon(userId, couponId);
+		if(userCouponItem != null){
+			couponReceiveVo.setCouponCode(userCouponItem.getCouponCode());
+			couponReceiveVo.setResponseCode(ResponseCodeEnum.RECEIVED.getCode());
+			return couponReceiveVo;
+		}
+		
+		//悲观锁 select for update
 		CouponItem couponItem = this.couponItemDao.selectFirstUnusedCoupon(couponId);
 		Coupon coupon = this.couponDao.selectCouponByCouponId(couponId);
+		//判断是否已经领光了
 		if(couponItem == null){
 			couponReceiveVo.setReceivedTimes(coupon.getReceivedTimes());
 			couponReceiveVo.setCouponCode(BizConst.SELL_OUT_TEXT);
+			couponReceiveVo.setResponseCode(ResponseCodeEnum.SELL_OUT.getCode());
 			return couponReceiveVo;
 		}
 		this.couponDao.increaseCouponReceivedTimes(couponId);
@@ -53,14 +70,8 @@ public class CouponServiceImpl implements CouponService{
 	}
 
 	@Override
-	public CouponVo getCouponInfoById(Long couponId) {
-		Coupon coupon = this.couponDao.selectCouponByCouponId(couponId);
-		CouponVo couponVo = null;
-		if(coupon != null){
-			couponVo = new CouponVo();
-			BeanUtils.copyProperties(coupon, couponVo);
-		}
-		return couponVo;
+	public CouponVo getCouponInfoById(String userId, Long couponId) {
+		return this.couponDao.selectUserCouponById(userId, couponId);
 	}
 
 }

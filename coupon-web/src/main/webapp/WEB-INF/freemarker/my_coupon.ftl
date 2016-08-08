@@ -19,8 +19,9 @@
 							<h3>${couponItem.couponName}</h3>
 							<div>
 								<span>有效期至 ${couponItem.expireDate? string('yyyy.MM.dd')}</span>
-								<a href="javascript:;" class="ruleLy">查看使用规则</a>
+								<a href="${rootPath}/coupon/detail.do?couponId=${couponItem.couponId}&userId=${userId}" class="ruleLy">查看使用规则</a>
 								<input type="hidden" id="usingRule_${couponItem.couponId}" value="${couponItem.usingRule}"/>
+								<input type="hidden" id="couponType_${couponInfo.couponId}" value="${couponItem.couponType}"/>
 								<input type="hidden" id="buyLink_${couponItem.couponId}" value="${couponItem.buyLink}"/>
 							</div>
 							<img src="${couponItem.brandLogo}">
