@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -52,11 +51,8 @@ public class CouponController extends BaseController {
 			@RequestParam(value="page", defaultValue="1") int page, 
 			@RequestParam(value="rows", defaultValue="1000") int rows,
 			@RequestParam(value="code", required=false) String code) throws WxErrorException {
-		logger.info("微信公众号code：" + code);
+		userId = this.myWxMpService.getUserId(userId, code);
 		ModelAndView mav = new ModelAndView();
-		if(StringUtils.isBlank(userId)){
-			 userId = this.myWxMpService.parseUserId(code);
-		}
 		List<CouponVo> couponInfos = this.couponService.queryCoupons(userId, page, rows);
         mav.addObject("couponInfos", couponInfos);
         mav.addObject("userId", userId);
@@ -74,7 +70,9 @@ public class CouponController extends BaseController {
 	@RequestMapping(value = "/receive", method = RequestMethod.POST)
 	@ResponseBody
 	public CouponReceiveVo receive(@RequestParam(required= true, value="userId") String userId,
-							@RequestParam(required= true, value="couponId") Long couponId) {
+							@RequestParam(required= true, value="couponId") Long couponId, 
+							@RequestParam(value="code", required=false) String code) {
+		userId = this.myWxMpService.getUserId(userId, code);
 		return this.couponService.receiveCoupon(userId, couponId);
 	}
 	
@@ -93,11 +91,7 @@ public class CouponController extends BaseController {
 			@RequestParam(value="page", defaultValue="1") int pageNum, 
 			@RequestParam(value="rows", defaultValue="1000") int rows,
 			@RequestParam(value="code", required=false) String code) throws WxErrorException {
-		logger.info("微信公众号code：" + code);
-		if(StringUtils.isBlank(userId)){
-			userId = this.myWxMpService.parseUserId(code);
-			
-		}
+		userId = this.myWxMpService.getUserId(userId, code);
 		ModelAndView mav = new ModelAndView();
 		List<CouponItemVo> couponItems = this.couponItemService.queryUserCouponItems(userId, pageNum, rows);
         mav.addObject("couponItems", couponItems);
@@ -120,16 +114,15 @@ public class CouponController extends BaseController {
 			@RequestParam(value="userId", required=false) String userId,
 			@RequestParam(value="couponId", required=true) Long couponId,
 			@RequestParam(value="code", required=false) String code) throws WxErrorException {
-		logger.info("微信公众号code：" + code);
+		userId = this.myWxMpService.getUserId(userId, code);
 		ModelAndView mav = new ModelAndView();
-		if(StringUtils.isBlank(userId)){
-			 userId = this.myWxMpService.parseUserId(code);
-		}
 		CouponVo couponInfo = this.couponService.getCouponInfoById(userId, couponId);
         mav.addObject("couponInfo", couponInfo);
         mav.addObject("userId", userId);
         mav.setViewName("detail.ftl");
         return mav;
 	}
+	
+	
 	
 }

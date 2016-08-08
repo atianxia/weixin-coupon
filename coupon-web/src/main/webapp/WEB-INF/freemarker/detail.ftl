@@ -23,7 +23,15 @@
 				<div class="place"></div>
 				<div class="conTxt">
 					<p>${couponInfo.usingRule}</p>
-					<div class="btn"><a id="detailBtn" href="">立即领取</a></div>
+					<div class="btn">
+						<#if couponInfo.received == 1>
+							<a href="" class="gray">已领取</a>
+						<#elseif couponInfo.amount == couponInfo.receivedTimes>
+							<a href="" class="gray">已领完</a>
+						<#else>
+							<a id="detailBtn" href="">立即领取</a>
+						</#if>
+					</div>
 				</div>
 				
 			</div>

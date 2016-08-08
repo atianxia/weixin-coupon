@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.groundnine.coupon.consts.BizConst;
 import com.groundnine.coupon.service.MyWxMpService;
+import com.groundnine.coupon.service.RedisService;
 
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.WxMenu;
@@ -26,6 +26,9 @@ import me.chanjar.weixin.mp.bean.result.WxMpUserList;
 @Service("myWxMpService")
 public class MyWxMpServiceImpl implements MyWxMpService {
 	private static final Logger logger = LoggerFactory.getLogger(MyWxMpServiceImpl.class);
+	
+	
+	
 	@Resource
 	private WxMpService wxMpService;
 	
@@ -34,6 +37,9 @@ public class MyWxMpServiceImpl implements MyWxMpService {
 	
 	@Value("${server.host}/${myCouponRedirectUri}")
 	private String myCouponRedirectUri;
+	
+	@Resource
+	private RedisService redisService;
 
 	private String buildCouponListUrl() {
 		return this.wxMpService.oauth2buildAuthorizationUrl(couponListRedirectUri, 
@@ -95,22 +101,32 @@ public class MyWxMpServiceImpl implements MyWxMpService {
 	}
 
 	@Override
-	public String parseUserId(String code) {
-		if (StringUtils.isBlank(code)) {
+	public String getUserId(String userId, final String code) {
+		logger.info("微信公众号code： " + code + ", 用戶Id： "+ userId + ", ");
+		if(StringUtils.isNotBlank(userId)){
+			return userId;
+		}
+		
+		if(StringUtils.isBlank(code)){
 			return null;
 		}
-
-		String userId = null;
-		try {
-			WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
-			// WxMpUser wxMpUser =
-			// wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken, null);
-			userId = wxMpOAuth2AccessToken.getOpenId();
-			logger.info("openId：" + userId);
-		} catch (WxErrorException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		String redisValue = this.redisService.getRedisValue(code);
+		
+		if(StringUtils.isNotBlank(redisValue)){
+			userId = redisValue;
+		}else{
+			WxMpOAuth2AccessToken wxMpOAuth2AccessToken;
+			try {
+				wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
+				userId = wxMpOAuth2AccessToken.getOpenId();
+				this.redisService.setRedisValueEx(code, 3600L, userId);
+			} catch (WxErrorException e) {
+				e.printStackTrace();
+			}
 		}
+		
+		logger.info("用戶Id： "+ userId);
 		return userId;
 	}
 	

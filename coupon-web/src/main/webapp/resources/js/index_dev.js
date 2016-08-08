@@ -15,13 +15,13 @@ function layer(btn,obj){
 		}
 		//阻止滑动
 		if($("#shadeConBlur").hide()){
-			$('html').css({
-				//'position': 'fixed',
-				//'height': '100%',
-				'overflow': 'hidden'
-				//'width': '100%'
+			$('body').css({
+				'position': 'relative',
+				'height': '100%',
+				'overflow': 'hidden', 
+				'width': '100%'
 			});
-
+			
 			$('#shadeConBlur').show().addClass('show');
 			$(obj).addClass('show');
 			
@@ -56,7 +56,7 @@ function oClose(btn,obj){
 			$('#shadeConBlur').hide();
 		},200)
 		
-		$('html').css({
+		$('body').css({
 			'position': 'static',
 			'height': 'auto',
 			'overflow': 'auto',

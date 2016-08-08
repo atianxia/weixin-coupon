@@ -235,7 +235,7 @@ table {
 	left: 50%;
 	margin-left: -40%;
 	top:50%;
-	margin-top: -110px;
+	margin-top: -150px;
 	background-color: #fff;
 	padding:20px;
 	border-radius: 5px;
@@ -252,6 +252,8 @@ table {
 .layerConRule p{
 	padding:20px 0;
 	min-height: 200px;
+	max-height: 200px;
+	overflow-y: scroll;
 	color: #666;
 	line-height: 2rem;
 }
@@ -403,6 +405,8 @@ table {
 }
 .content.detail .conTxt{
 	min-height: 365px;
+	max-height: 365px;
+	overflow-y: scroll;
 }
 .content.detail .conTxt .btn{
 	position: fixed;
@@ -423,6 +427,9 @@ table {
 	left:0;
 	background: #ff5656;
 	text-decoration: none;
+}
+.content.detail .conTxt .btn a.gray{
+	background: #ccc;
 }
 .content.detail .conTxt p{
 	font-size: 14px;
