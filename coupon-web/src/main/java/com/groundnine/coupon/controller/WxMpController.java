@@ -110,7 +110,6 @@ public class WxMpController {
 	public String getOpenId(String code, HttpServletRequest request, HttpServletResponse response)
 			throws WxErrorException {
 		System.out.println("weixin回调");
-		;
 		WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
 		WxMpUser wxMpUser = wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken, null);
 		String id = wxMpUser.getOpenId();

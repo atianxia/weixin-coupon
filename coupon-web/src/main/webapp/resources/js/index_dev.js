@@ -92,7 +92,8 @@ function userOperation($this, obj){
 		}
 		
 	}else if(obj==".layerConRule"){//查看使用规则
-		var couponType = $this.next().next().attr("value");
+		return false;
+		/*var couponType = $this.next().next().attr("value");
 		if(couponType ==0){
 			return false;
 		}
@@ -102,7 +103,7 @@ function userOperation($this, obj){
 		var ruleToUse = $('#ruleToUse');
 		if(ruleToUse){
 			$("#ruleToUse").attr("href",buyLink);
-		}
+		}*/
 	}
 	return true;
 }

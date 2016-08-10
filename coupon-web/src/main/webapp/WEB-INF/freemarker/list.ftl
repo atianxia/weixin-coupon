@@ -19,11 +19,7 @@
 							<h3>${couponInfo.couponName}</h3>
 							<div>
 								<span>有效期至${couponInfo.expireDate? string('yyyy.MM.dd')}</span>
-								<#if couponInfo.couponType = 0>
 								<a href="${rootPath}/coupon/detail.do?couponId=${couponInfo.couponId}&userId=${userId}" class="ruleLy">查看使用规则</a>
-								<#else>
-								<a href="javascript:;" class="ruleLy">查看使用规则</a>
-								</#if>
 								<input type="hidden" id="usingRule_${couponInfo.couponId}" value="${couponInfo.usingRule}"/>
 								<input type="hidden" id="couponType_${couponInfo.couponId}" value="${couponInfo.couponType}"/>
 							</div>
