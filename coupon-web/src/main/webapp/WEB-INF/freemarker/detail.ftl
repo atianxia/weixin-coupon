@@ -24,6 +24,17 @@
 				<div class="conTxt">
 					<p>${couponInfo.usingRule}</p>
 					<div class="btn">
+					<#if couponInfo.couponType = 1>
+						<div class="conBot">
+							<a href="${couponInfo.localLink}" class="cpLy">去领取</a>
+							<input type="hidden" id="couponType_${couponInfo.couponId}" value="${couponInfo.couponType}"/>
+						</div>
+					<#elseif couponInfo.couponType = 2>
+						<div class="conBot">
+							<a href="${couponInfo.buyLink}" class="cpLy">去领取</a>
+							<input type="hidden" id="couponType_${couponInfo.couponId}" value="${couponInfo.couponType}"/>
+						</div>
+					<#else>
 						<#if couponInfo.received == 1>
 							<a href="" class="gray">已领取</a>
 						<#elseif couponInfo.amount == couponInfo.receivedTimes>
@@ -31,6 +42,7 @@
 						<#else>
 							<a id="detailBtn" href="">立即领取</a>
 						</#if>
+					</#if>
 					</div>
 				</div>
 				
