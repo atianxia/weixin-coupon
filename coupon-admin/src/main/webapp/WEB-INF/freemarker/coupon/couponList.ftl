@@ -24,7 +24,7 @@
                 <th field="expireDate" width="100" >有效日期截至时间</th>
                 <th field="brandLogo" width="50">品牌标志</th>
                 <th field="usingRule" width="50">使用规则</th>
-                <th field="localLink" width="50">本地链接</th>
+                <th field="localLink" width="50" formatter="formatLocalLink">本地链接</th>
                 <th field="buyLink" width="50">购买链接</th>
                 <th field="createTime" width="100" >创建时间</th>
                 <th field="updateTime" width="100">最后更新时间</th>

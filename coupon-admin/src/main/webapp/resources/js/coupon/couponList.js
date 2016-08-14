@@ -210,6 +210,16 @@ var formatCouponStatus = function(couponStatus){
 	return couponStatus ==1 ? "上架" : "下架";
 }
 
+
+var formatLocalLink = function(localLink, row){
+	if(row.couponType == 1){
+		return localLink;
+	}else{
+		var rootPath = $('#rootPath').val();
+		return "http://gzh.jyinform.com/coupon-web/coupon/detail.do?couponId="  + row.couponId;
+	}
+}
+
 var formatCouponType = function(couponType){
 	return couponType ==0 ? "本地领取" : (couponType ==1 ? "本地链接展示" :"第三方领取");
 }
