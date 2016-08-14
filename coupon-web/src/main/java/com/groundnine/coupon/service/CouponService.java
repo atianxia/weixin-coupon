@@ -13,4 +13,6 @@ public interface CouponService {
 
 	CouponVo getCouponInfoById(String userId, Long couponId);
 
+	int increaseClickTimes(Long couponId);
+
 }

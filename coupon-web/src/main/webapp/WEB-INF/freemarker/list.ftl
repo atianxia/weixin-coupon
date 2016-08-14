@@ -32,11 +32,13 @@
 							<div class="conBot">
 								<a href="${couponInfo.localLink}" class="cpLy">去领取</a>
 								<input type="hidden" id="couponType_${couponInfo.couponId}" value="${couponInfo.couponType}"/>
+								<input type="hidden" id="couponId_${couponInfo.couponId}" value="${couponInfo.couponId}"/>
 							</div>
 						<#elseif couponInfo.couponType = 2>
 							<div class="conBot">
 								<a href="${couponInfo.buyLink}" class="cpLy">去领取</a>
 								<input type="hidden" id="couponType_${couponInfo.couponId}" value="${couponInfo.couponType}"/>
+								<input type="hidden" id="couponId_${couponInfo.couponId}" value="${couponInfo.couponId}"/>
 							</div>
 						<#else>
 							<#if couponInfo.received == 1>

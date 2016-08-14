@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -123,6 +124,24 @@ public class CouponController extends BaseController {
         return mav;
 	}
 	
+	/**
+	 * 点击计数
+	 * 
+	 * @param userId
+	 * @param couponId
+	 * @param code
+	 * @return
+	 * @throws WxErrorException
+	 */
+	@RequestMapping(value = "/click", method = RequestMethod.POST)
+	@ResponseBody
+	public ModelMap click(
+			@RequestParam(value="couponId", required=true) Long couponId) throws WxErrorException {
+		ModelMap modelMap = new ModelMap();
+		int clickTimes = this.couponService.increaseClickTimes(couponId);
+		modelMap.addAttribute("clickTimes", clickTimes);
+        return modelMap;
+	}
 	
 	
 }

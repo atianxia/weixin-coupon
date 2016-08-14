@@ -74,4 +74,15 @@ public class CouponServiceImpl implements CouponService{
 		return this.couponDao.selectUserCouponById(userId, couponId);
 	}
 
+	@Transactional
+	@Override
+	public int increaseClickTimes(Long couponId) {
+		Coupon coupon = this.couponDao.selectCouponByCouponId(couponId);
+		if(coupon.getCouponType() == 0){
+			return coupon.getReceivedTimes();
+		}
+		this.couponDao.increaseCouponReceivedTimes(couponId);
+		return coupon.getReceivedTimes() + 1;
+	}
+
 }

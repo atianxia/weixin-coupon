@@ -85,6 +85,9 @@ public class CouponServiceImpl implements CouponService {
 		Coupon coupon = new Coupon();
 		BeanUtils.copyProperties(couponVo, coupon);
 		coupon.setAmount(couponCodes.size());
+		if(coupon.getCouponType() != 0){
+			coupon.setAmount(Integer.MAX_VALUE);
+		}
 		int dbResut = this.couponDao.insert(coupon);
 		if(dbResut>0 && CollectionUtils.isNotEmpty(couponCodes)){
 			this.couponItemDao.batchInsertCouponItem(coupon.getCouponId(), couponCodes);

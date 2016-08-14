@@ -88,6 +88,7 @@ function userOperation($this, obj){
 		if(couponType ==0){
 			return receiveCoupon($this);
 		}else{
+			increaseClickTimes($this);
 			return false;
 		}
 		
@@ -106,6 +107,25 @@ function userOperation($this, obj){
 		}*/
 	}
 	return true;
+}
+
+function increaseClickTimes($this){
+	var couponId = $this.next().next().attr("value");
+	var rootPath = $("#rootPath").val();
+	$.ajax({
+		url : rootPath + "/coupon/click.do",
+		type : 'post', // 上线之前改成post
+		timeout : 5000,
+		data : {
+			couponId :couponId
+		},
+		dataType : 'json',
+		cache : false,
+		success : function(json) {
+		},
+		error : function(e) {
+		}
+	});
 }
 
 /**
