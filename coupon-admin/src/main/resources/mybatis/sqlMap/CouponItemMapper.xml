@@ -117,7 +117,7 @@
     <include refid="Base_Column_List" />
     from coupon_item
     where  
-    	coupon_id = #{record.couponId,jdbcType=BIGINT}
+    	coupon_id = #{couponId,jdbcType=BIGINT}
   </select>
   <update id="updateBySelective" parameterType="map" >
     update coupon_item

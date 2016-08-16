@@ -1,11 +1,7 @@
 package com.groundnine.coupon.controller;
 
-import java.io.IOException;
-import java.util.Set;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.groundnine.coupon.service.CouponItemService;
+import com.groundnine.coupon.service.FileUploadService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,21 +10,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import com.groundnine.coupon.dao.CouponItemDao;
-import com.groundnine.coupon.service.CouponService;
-import com.groundnine.coupon.service.FileUploadService;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Set;
 
 @Controller
 public class FileUploadController extends BaseController{
 	
 	@Resource
-	private CouponService couponService;
-	
-	@Resource
 	private FileUploadService fileUploadService;
 	
 	@Resource
-	private CouponItemDao couponItemDao;
+	private CouponItemService couponItemService;
 	
 	@RequestMapping(value = "coupon/picFileUpload", method = RequestMethod.POST)  
 	@ResponseBody
@@ -49,7 +43,7 @@ public class FileUploadController extends BaseController{
 	public ModelMap importExcel(@RequestParam CommonsMultipartFile uploadExcel, Long couponId)
 			throws IOException {
 		Set<String> couponCodes = this.fileUploadService.parseCouponCodeExcel(uploadExcel);
-		int importAmount = this.couponItemDao.batchInsertCouponItem(couponId, couponCodes);
+		int importAmount = this.couponItemService.batchInsertCouponItem(couponId, couponCodes);
 		ModelMap modelMap = new ModelMap();
 		modelMap.addAttribute("result", importAmount >0 ? "success" : "failed");
 		return modelMap;

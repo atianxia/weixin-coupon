@@ -9,7 +9,7 @@ import com.groundnine.coupon.vo.CouponVo;
 
 public interface CouponService {
 	
-	CouponVo getCouponById(String couponId);
+	CouponVo getCouponById(Long couponId);
 
 	List<Coupon> queryCoupons(CouponQueryVo couponQueryVo, int page, int rows);
 

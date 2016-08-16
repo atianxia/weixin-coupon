@@ -35,7 +35,7 @@ public class CouponServiceImpl implements CouponService {
 	
 
 	@Override
-	public CouponVo getCouponById(String couponId) {
+	public CouponVo getCouponById(Long couponId) {
 		Coupon coupon = this.couponDao.selectByCouponId(couponId);
 		CouponVo couponVo = null;
 		if(coupon != null){

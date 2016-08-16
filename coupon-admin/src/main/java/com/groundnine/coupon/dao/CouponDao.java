@@ -13,7 +13,7 @@ public interface CouponDao {
 
     int insert(Coupon record);
 
-    Coupon selectByCouponId(String couponId);
+    Coupon selectByCouponId(Long couponId);
     
     List<Coupon> queryCoupons(@Param("coupon") CouponQueryVo couponQueryVo, @Param("pageStart")int pageStart, @Param("rows") int rows);
 

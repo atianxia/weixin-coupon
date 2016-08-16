@@ -276,6 +276,12 @@
       <if test="isDel != null" >
         is_del = #{isDel,jdbcType=BIT},
       </if>
+       <if test="amount != null">
+       	amount = #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="receivedTimes != null">
+        received_times = #{receivedTimes,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
